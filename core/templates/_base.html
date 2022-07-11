@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,11 +20,12 @@
     </head>
 
     <body class="bg-white">
-        {% include "paths/_navbar.html" %}
+        {% block navbar %}
+            {% include "paths/_navbar.html" %}
+        {% endblock navbar %}
 
         {% block page_content %}
+            
         {% endblock page_content %}
-
-        {% include "paths/_footer.html" %}
     </body>
 </html>
