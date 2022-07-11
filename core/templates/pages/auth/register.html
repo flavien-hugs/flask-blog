@@ -1,0 +1,62 @@
+{% extends '_base.html' %}
+
+{% block navbar %}
+
+{% endblock navbar %}
+
+{% block page_content %}
+	<div class="container d-flex flex-column">
+		<div class="row align-items-center justify-content-center g-0 min-vh-100">
+			<div class="col-lg-5 col-md-8 py-8 py-xl-0">
+				<div class="card shadow ">
+					<div class="card-body p-6">
+						<div class="mb-4">
+							<a href="{{ url_for('homePage') }}">
+								<img src="{{ url_for('static', filename='img/logo.svg') }}" class="mb-4" alt="login">
+							</a>
+
+							<h1 class="mb-1 fw-bold">{{ page_title }}</h1>
+							<span>
+								Vous avez un compte ?
+								<a href="{{ url_for('loginPage') }}" class="ms-1">
+									Connectez-vous
+								</a>
+							</span>
+						</div>
+						
+						<form action="" method="POST">
+
+							{{ form.hidden_tag() }}
+
+							<div class="mb-3">
+								{{ form.username.label(class="form-label") }}
+								{{ form.username(class="form-control shadow-none", placeholder="Entrer votre nom & prénoms") }}
+							</div>
+
+							<div class="mb-3">
+								{{ form.email.label(class="form-label") }}
+								{{ form.email(class="form-control shadow-none", placeholder="Entrer votre adresse e-mail") }}
+							</div>
+
+							<div class="mb-3">
+								{{ form.password.label(class="form-label") }}
+								{{ form.password(class="form-control shadow-none", placeholder="**************") }}
+							</div>
+
+							<div class="mb-3">
+								{{ form.confirm_password.label(class="form-label") }}
+								{{ form.confirm_password(class="form-control shadow-none", placeholder="**************") }}
+							</div>
+
+							<div>
+								<div class="d-grid">
+									{{ form.submit(class="btn btn-primary fshadow-none") }}
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock page_content %}
