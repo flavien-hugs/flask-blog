@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=""/>
+        <meta name="keywords" content=""/>
+
+        <link type="text/css" href="{{ url_for('static', filename='css/theme.min.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ url_for('static', filename='fonts/feather/feather.css') }}" rel="stylesheet">
+        
+        <title>
+            {% if page_title %}
+                {{ page_title }}
+            {% else %}
+                Accueil
+            {% endif %} &smid; Unsta inc
+        </title>
+    </head>
+
+    <body class="bg-white">
+        {% include "paths/_navbar.html" %}
+
+        {% block page_content %}
+        {% endblock page_content %}
+
+        {% include "paths/_footer.html" %}
+    </body>
+</html>

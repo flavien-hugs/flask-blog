@@ -1,0 +1,78 @@
+<div class="pt-lg-10 pt-5 footer bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="mb-4">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
+                    <div class="mt-4">
+                        <p>Geek is feature-rich components and beautifully Bootstrap UIKit for developers, built with bootstrap responsive framework.</p>
+                        <div class="fs-4 mt-4">
+                            <a href="#" class="mdi mdi-facebook fs-4 text-muted me-2"></a>
+                            <a href="#" class="mdi mdi-twitter text-muted me-2"></a>
+                            <a href="#" class="mdi mdi-linkedin text-muted "></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-lg-1 col-lg-2 col-md-3 col-6">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Liens Utils</h3>
+                    <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
+                        <li>
+                            <a href="{{ url_for('blogListPage') }}" class="nav-link">Blog</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('contactPage') }}" class="nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-6">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Support</h3>
+                    <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
+                        <li>
+                            <a href="#" class="nav-link">Aides</a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link">FAQ’s</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Contactez-moi !</h3>
+                    <p>Bouaké, Côte d'Ivoire</p>
+                    <p class="mb-1">Email:
+                        <a href="email:{{ config.EMAIL_ADDRESS }}">
+                        {{ config.EMAIL_ADDRESS }}</a>
+                    </p>
+                    <p>
+                        Tél: <span class="text-dark fw-semi-bold">
+                            {{ config.PHONE_NUMBER }}
+                        </span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center g-0 border-top py-2 mt-6">
+            <div class="col-lg-4 col-md-5 col-12">
+                <span>&copy; 2022 Unsta Inc.</span>
+            </div>
+            <div class="col-12 col-md-7 col-lg-8 d-md-flex justify-content-end">
+                <nav class="nav nav-footer">
+                    <a class="nav-link ps-0" href="#">Privacy Policy</a>
+                    <a class="nav-link px-2 px-md-3" href="#">
+                        Cookie Notice
+                    </a>
+                    <a class="nav-link" href="#">Terms of Use</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
