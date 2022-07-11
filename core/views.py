@@ -1,10 +1,12 @@
 # core.views.py
 
-from flask import Flask, render_template
-from flask_wtf.csrf import CSRFError
-
+from flask import(
+    Flask, render_template, flash, redirect,
+    flash, url_for
+)
 
 from core.forms import RegistrationForm, LoginForm
+from flask_wtf.csrf import CSRFError
 
 
 app = Flask(__name__)
@@ -57,19 +59,23 @@ def aboutPage():
     return render_template('pages/about.html', page_title=page_title)
 
 
-@app.route("/register/")
-@app.route("/inscription/")
+@app.route("/register/", methods=['GET', 'POST'])
+@app.route("/inscription/", methods=['GET', 'POST'])
 def registerPage():
     page_title = "Inscription"
     form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f"Account created for {form.username.data } !", "success")
+        return redirect(url_for('homePage'))
+
     return render_template(
         'pages/auth/register.html',
         page_title=page_title, form=form
     )
 
 
-@app.route("/login/")
-@app.route("/connexion/")
+@app.route("/login/", methods=['GET', 'POST'])
+@app.route("/connexion/", methods=['GET', 'POST'])
 def loginPage():
     page_title = "Connexion"
     form = LoginForm()
