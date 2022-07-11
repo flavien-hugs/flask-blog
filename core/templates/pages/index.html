@@ -5,7 +5,11 @@
     
     <main class="py-8">
         <div class="container">
-            
+            {% block content %}
+                
+            {% endblock content %}
         </div>
     </main>
+
+    {% include "paths/_footer.html" %}
 {% endblock page_content %}

@@ -1,44 +1,40 @@
-{% extends '_base.html' %}
+{% extends "pages/index.html" %}
 
-{% block page_content %}
-    <main class="py-8">
-        <div class="container">
-            <div class="row">
-                {% include "paths/_sidebar.html" %}
+{% block content %}
+    <div class="row">
+        {% include "paths/_sidebar.html" %}
 
-                <div class="col-xl-9 col-md-8 mb-6 mb-md-0">
-                    <div class="row align-items-center mb-4">
-                        <div class="col">
-                            <p class="mb-0">1 - 20 of 86 IT Manager Jobs in India</p>
+        <div class="col-xl-9 col-md-8 mb-6 mb-md-0">
+            <div class="row align-items-center mb-4">
+                <div class="col">
+                    <p class="mb-0">1 - 20 of 86 IT Manager Jobs in India</p>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex ">
+                        <div class="nav btn-group flex-nowrap" role="tablist">
+                            <a href="job-grid.html" class="btn btn-outline-white btn-sm d-flex align-items-center">
+                                <span class="fe fe-grid"></span>
+                            </a>
+
+                            <a href="job-listing.html" class="btn btn-outline-white active btn-sm  d-flex align-items-center ">
+                                <span class="fe fe-list"></span>
+                            </a>
                         </div>
-                        <div class="col-auto">
-                            <div class="d-flex ">
-                                <div class="nav btn-group flex-nowrap" role="tablist">
-                                    <a href="job-grid.html" class="btn btn-outline-white btn-sm d-flex align-items-center">
-                                        <span class="fe fe-grid"></span>
-                                    </a>
-                                    
-                                    <a href="job-listing.html" class="btn btn-outline-white active btn-sm  d-flex align-items-center ">
-                                        <span class="fe fe-list"></span>
-                                    </a>
-                                </div>
-                                
-                                <div class="ms-3">
-                                    <select class="selectpicker form-control" data-width="100%">
-                                        <option value="">Sorting</option>
-                                        <option value="Newest">Newest</option>
-                                        <option value="Oldest">Oldest</option>
-                                    </select>
-                                </div>
-                            </div>
+
+                        <div class="ms-3">
+                            <select class="selectpicker form-control" data-width="100%">
+                                <option value="">Sorting</option>
+                                <option value="Newest">Newest</option>
+                                <option value="Oldest">Oldest</option>
+                            </select>
                         </div>
                     </div>
-
-                    {% include "paths/posts/_post.html" %}
-
-                    {% include "paths/_paginate.html" %}
                 </div>
             </div>
+
+            {% include "paths/posts/_post.html" %}
+
+            {% include "paths/_paginate.html" %}
         </div>
-    </main>
-{% endblock page_content %}
+    </div>
+{% endblock content %}
