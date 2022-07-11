@@ -1,6 +1,10 @@
 # core.views.py
 
 from flask import Flask, render_template
+from flask_wtf.csrf import CSRFError
+
+
+from core.forms import RegistrationForm, LoginForm
 
 
 app = Flask(__name__)
@@ -53,6 +57,28 @@ def aboutPage():
     return render_template('pages/about.html', page_title=page_title)
 
 
+@app.route("/register/")
+@app.route("/inscription/")
+def registerPage():
+    page_title = "Inscription"
+    form = RegistrationForm()
+    return render_template(
+        'pages/auth/register.html',
+        page_title=page_title, form=form
+    )
+
+
+@app.route("/login/")
+@app.route("/connexion/")
+def loginPage():
+    page_title = "Connexion"
+    form = LoginForm()
+    return render_template(
+        'pages/auth/login.html',
+        page_title=page_title, form=form
+    )
+
+
 @app.errorhandler(404)
 def pageNotFound(error):
     page_title = "Page non trouvé"
@@ -63,3 +89,8 @@ def pageNotFound(error):
 def serverError(error):
     page_title = "Quelques choses à mal tourné"
     return render_template('pages/error.html', page_title=page_title, error=error), 500
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return render_template('pages/error.html', error=e.description), 400
