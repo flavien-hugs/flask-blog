@@ -30,22 +30,62 @@
 
 							<div class="mb-3">
 								{{ form.username.label(class="form-label") }}
-								{{ form.username(class="form-control shadow-none", placeholder="Entrer votre nom & prénoms") }}
+
+								{% if form.username.errors %}
+								    {{ form.username(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.username.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+								    {{ form.username(class="form-control shadow-none", placeholder="Entrer votre nom & prénoms") }}
+								{% endif %}
 							</div>
 
 							<div class="mb-3">
 								{{ form.email.label(class="form-label") }}
-								{{ form.email(class="form-control shadow-none", placeholder="Entrer votre adresse e-mail") }}
+
+								{% if form.email.errors %}
+								    {{ form.email(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.email.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.email(class="form-control shadow-none", placeholder="Entrer votre adresse e-mail") }}
+								{% endif %}
 							</div>
 
 							<div class="mb-3">
 								{{ form.password.label(class="form-label") }}
-								{{ form.password(class="form-control shadow-none", placeholder="**************") }}
+
+								{% if form.password.errors %}
+								    {{ form.password(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.password.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.email(class="form-control shadow-none", placeholder="Entrer votre adresse e-mail") }}
+								{% endif %}
 							</div>
 
 							<div class="mb-3">
 								{{ form.confirm_password.label(class="form-label") }}
-								{{ form.confirm_password(class="form-control shadow-none", placeholder="**************") }}
+
+								{% if form.confirm_password.errors %}
+								    {{ form.confirm_password(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.confirm_password.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.confirm_password(class="form-control shadow-none", placeholder="**************") }}
+								{% endif %}
 							</div>
 
 							<div>
