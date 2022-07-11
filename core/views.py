@@ -79,6 +79,15 @@ def registerPage():
 def loginPage():
     page_title = "Connexion"
     form = LoginForm()
+    if(
+        form.email.data == 'admin@pm.me'
+        and form.password.data == 'password'
+    ):
+        flash(f"You have been logged in {form.email.data } !", "success")
+        return redirect(url_for('homePage'))
+    else:
+        flash(f"Login unsuccessful. Please check email and password !", "danger")
+
     return render_template(
         'pages/auth/login.html',
         page_title=page_title, form=form
