@@ -9,6 +9,9 @@ flask-wtf = "*"
 email-validator = "*"
 gunicorn = "*"
 flask-sqlalchemy = "*"
+flask-bcrypt = "*"
+flask-login = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
