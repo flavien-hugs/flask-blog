@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-default">
 	<div class="container px-0">
-		<a class="navbar-brand" href="{{ url_for('homePage') }}">
+		<a class="navbar-brand" href="{{ url_for('main.homePage') }}">
 			<img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo"/>
 		</a>
 
@@ -21,25 +21,42 @@
 		<div class="collapse navbar-collapse" id="navbar-default">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('homePage') }}">
+                    <a class="nav-link" href="{{ url_for('main.homePage') }}">
                     	Accueil
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('blogListPage') }}">
+                    <a class="nav-link" href="{{ url_for('main.blogListPage') }}">
                     	Blog
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('aboutPage') }}">
+                    <a class="nav-link" href="{{ url_for('main.aboutPage') }}">
                     	Qui suis-je ?
                     </a>
                 </li>
 			</ul>
 
 			<div class="ms-2 mt-3 mt-lg-0">
-                <a href="{{ url_for('loginPage') }}" class="btn btn-outline-primary">Connexion</a>
-				<a href="{{ url_for('registerPage') }}" class="btn btn-primary">Inscription</a>
+				{% if current_user.is_authenticated %}
+					<a href="{{ url_for('main.dashboardPage') }}"
+						class="btn btn-sm btn-outline-primary fw-bold text-uppercase shadow-none">
+                		mon compte
+	                </a>
+					<a href="{{ url_for('auth.logoutPage') }}"
+						class="btn btn-sm btn-danger fw-bold text-uppercase shadow-none">
+                		deconnexion
+	                </a>
+				{% else %}
+					<a href="{{ url_for('auth.loginPage') }}"
+						class="btn btn-sm btn-outline-primary fw-bold text-uppercase shadow-none">
+                		connexion
+	                </a>
+					<a href="{{ url_for('auth.registerPage') }}"
+						class="btn btn-sm btn-success fw-bold text-uppercase shadow-none">
+						je m'inscris
+					</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>
