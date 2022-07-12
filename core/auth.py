@@ -19,7 +19,7 @@ auth = Blueprint("auth", __name__)
 def registerPage():
 
     """
-    User sign-up page.
+    User signup page.
     GET requests serve sign-up page.
     POST requests validate form & user creation.
     """
@@ -54,7 +54,7 @@ def registerPage():
 def loginPage():
 
     """
-    Log-in page for registered users.
+    Login page for registered users.
     GET requests serve Log-in page.
     POST requests validate and redirect user to dashboard.
     """
@@ -68,7 +68,7 @@ def loginPage():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('main.dashboardPage'))
+            return redirect(next_page) if next_page else redirect(url_for('main.dashboardPage'))
 
         flash("Combinaison nom d'utilisateur/mot de passe invalide.", "danger")
         return redirect(url_for('auth.loginPage'))
@@ -85,6 +85,9 @@ def loginPage():
 @auth.route('/account/deconnexion/')
 @login_required
 def logoutPage():
+    """
+    Logout page users.
+    """
     logout_user()
     return redirect(url_for('main.homePage'))
 
