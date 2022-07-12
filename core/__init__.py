@@ -17,6 +17,8 @@ bcrypt = Bcrypt(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.loginPage'
+login_manager.login_message_category = 'info'
+
 
 from core import models
 from .auth import auth as auth_blueprint
