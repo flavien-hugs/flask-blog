@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block page_content %}
+
+    <main class="py-8">
+        <div class="container">
+            {{ current_user }}
+        </div>
+    </main>
+
+    {% include "paths/_footer.html" %}
+{% endblock page_content %}
