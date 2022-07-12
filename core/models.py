@@ -2,13 +2,7 @@
 
 from datetime import datetime
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-
-app = Flask(__name__)
-app.config.from_object('config')
-db = SQLAlchemy(app)
+from core import db
 
 
 class User(db.Model):
@@ -35,3 +29,23 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+user = User(
+    username="Flavien HUGS",
+    email="flavienhugs@pm.me",
+    password="password"
+)
+
+post = Post(
+    user_id=1,
+    title="Post one",
+    content="First post content one !"
+)
+
+def init_database():
+    db.create_all()
+    db.session.add(user)
+    db.session.add(post)
+    db.session.commit()
+    lg.warning('Database initialized !')

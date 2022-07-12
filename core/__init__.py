@@ -1,31 +1,17 @@
 import logging as lg
 
-from core import models
-from core.views import app
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-user = models.User(
-    username="Flavien HUGS",
-    email="flavienhugs@pm.me",
-    password="password"
-)
+app = Flask(__name__)
+app.config.from_object('config')
+db = SQLAlchemy(app)
 
-post = models.Post(
-    user_id=1,
-    title="Post one",
-    content="First post content one !"
-)
-
-def init_database():
-    models.db.create_all()
-    models.db.session.add(user)
-    models.db.session.add(post)
-    models.db.session.commit()
-    lg.warning('Database initialized !')
+from core import routes, models
 
 
-models.db.init_app(app)
-
+db.init_app(app)
 
 @app.cli.command('init_db')
 def init_db():
-    init_database()
+    models.init_database()

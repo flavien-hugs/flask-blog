@@ -1,16 +1,14 @@
-# core.views.py
+# core.routers.py
 
 from flask import(
-    Flask, render_template, flash, redirect,
+    render_template, flash, redirect,
     flash, url_for, session
 )
-
-from core.forms import RegistrationForm, LoginForm
 from flask_wtf.csrf import CSRFError
 
-
-app = Flask(__name__)
-app.config.from_object('config')
+from core import app
+from core.models import User, Post
+from core.forms import RegistrationForm, LoginForm
 
 
 posts = [
