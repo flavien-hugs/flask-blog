@@ -2,7 +2,7 @@
 
 from flask import(
     Flask, render_template, flash, redirect,
-    flash, url_for
+    flash, url_for, session
 )
 
 from core.forms import RegistrationForm, LoginForm
@@ -92,6 +92,13 @@ def loginPage():
         'pages/auth/login.html',
         page_title=page_title, form=form
     )
+
+
+@app.route('/logout/')
+@app.route('/deconnexion/')
+def logoutPage():
+    session.clear()
+    return redirect(url_for('homePage'))
 
 
 @app.errorhandler(404)
