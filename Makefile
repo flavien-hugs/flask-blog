@@ -14,4 +14,4 @@ freeze: ## Pin current dependencies
 	pipenv run pip freeze > requirements.txt
 
 db: ## init database
-	FLASK_APP=run.py flask init_db
+	FLASK_APP=setup.py flask init_db
