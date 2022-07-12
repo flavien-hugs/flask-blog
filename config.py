@@ -1,19 +1,29 @@
-# config.py
+"""
+Flask app configuration.
+Set Flask configuration from environment variables
+"""
 
-import os
+from os import environ, path
+from dotenv import load_dotenv
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+BASE_DIR = path.abspath(path.dirname(__file__))
+
+load_dotenv(path.join(BASE_DIR, ".flaskeenv"))
+
+
+SECRET_KEY = environ.get('SECRET_KEY')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = False
 
-if os.getenv('DATABASE_URL'):
-   SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+if environ.get('DATABASE_URL'):
+   SQLALCHEMY_DATABASE_URI = environ.get("DATABASE_URL")
 else:
-   BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-   SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(BASE_DIR, 'site.db')
+   SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(BASE_DIR, 'site.db')
+
 
 EMAIL_ADDRESS = "support@unsta.net"
 PHONE_NUMBER = "(225) 01 5157 1396"
 
 # https://flask-wtf.readthedocs.io/en/1.0.x/form/#secure-form
 
-WTF_CSRF_SECRET_KEY = os.environ.get('SECRET_KEY')
+WTF_CSRF_SECRET_KEY = environ.get('SECRET_KEY')
