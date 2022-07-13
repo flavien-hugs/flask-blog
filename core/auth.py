@@ -2,6 +2,9 @@
 Routes for user authentication.
 """
 
+import os
+import secrets
+
 from flask import Blueprint, render_template, redirect, request, flash, url_for
 
 from core.models import User
@@ -88,6 +91,16 @@ def loginPage():
     )
 
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, extension = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + extension
+    picture_path = os.path.join(auth.root_path, 'media/user/', picture_fn)
+    form_picture.save(picture_path)
+
+    return picture_fn
+
+
 @auth.route('/account/me/update/account/', methods=['GET', 'POST'], strict_slashes=False)
 @auth.route('/account/dashboard/update/account/', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
@@ -95,6 +108,10 @@ def updateAccountPage():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         try:
+            if form.picture.data:
+                picture_file = save_picture(form.picture.data)
+                current_user.image_file = picture_file
+
             current_user.email = form.email.data
             current_user.username = form.username.data
             db.session.commit()
@@ -107,7 +124,7 @@ def updateAccountPage():
         form.username.data = current_user.username
 
     user_picture = url_for(
-        "static", filename=f"img/user/{current_user.image_file}"
+        "static", filename=f"media/user/{current_user.image_file}"
     )
 
     page_title = "Modifier mon compte"
