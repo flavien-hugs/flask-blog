@@ -21,8 +21,7 @@
 					</div>
 				</div>
 				<div>
-					<a href="#" class="btn btn-outline-white btn-sm">Update</a>
-					<a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+					<a href="#picture" class="btn btn-outline-danger btn-sm">Changer</a>
 				</div>
 			</div>
 
@@ -34,7 +33,7 @@
 					Vous avez le contrôle total pour gérer les paramètres de votre propre compte.
 				</p>
 
-				<form method="POST" action="." class="row">
+				<form method="POST" action="." class="row" enctype="multipart/form-data">
 					{{ form.csrf_token }}
 							
 					{{ form.hidden_tag() }}
@@ -96,6 +95,21 @@
 							</div>
 						{% else %}
 							{{ form.biography(class="form-control shadow-none", placeholder="Votre biographie") }}
+						{% endif %}
+					</div>
+
+					<div class="mb-3 col-12 col-md-12">
+						{{ form.picture.label(class="form-label") }}
+
+						{% if form.picture.errors %}
+							{{ form.picture(class="form-control-file shadow-none is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.picture.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.picture(class="form-control-file shadow-none", placeholder="Photo de profile") }}
 						{% endif %}
 					</div>
 
