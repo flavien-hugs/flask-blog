@@ -7,6 +7,9 @@ from core import db, login_manager
 from flask_login import UserMixin
 from flask import redirect, flash, url_for
 
+from slugify import slugify
+
+
 class User(db.Model, UserMixin):
 
     """
@@ -27,6 +30,12 @@ class User(db.Model, UserMixin):
     username = db.Column(
         db.String(100),
         nullable=False,
+        unique=True
+    )
+    slug = db.Column(
+        db.String(100),
+        nullable=False,
+        index=True,
         unique=True
     )
     password = db.Column(
@@ -67,6 +76,11 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
+    @staticmethod
+    def generate_user_slug(target, value, oldvalue, initiator):
+        if value and (not target.slug or value != oldvalue):
+            target.slug = slugify(value)
+
 
 class Post(db.Model):
     """
@@ -80,7 +94,7 @@ class Post(db.Model):
         primary_key=True
     )
     title = db.Column(
-        db.String(255),
+        db.String(200),
         unique=True,
         nullable=False
     )
@@ -103,9 +117,24 @@ class Post(db.Model):
         db.ForeignKey('user.id'),
         nullable=False
     )
+    slug = db.Column(
+        db.String(200),
+        nullable=False,
+        index=True,
+        unique=True
+    )
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+    @staticmethod
+    def generate_post_slug(target, value, oldvalue, initiator):
+        if value and (not target.slug or value != oldvalue):
+            target.slug = slugify(value)
+
+
+db.event.listen(User.username, 'set', User.generate_user_slug, retval=False)
+db.event.listen(Post.title, 'set', Post.generate_post_slug, retval=False)
 
 
 user = User(username="Flavien HUGS", email="flavienhugs@pm.me", password="password")

@@ -11,11 +11,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 
 # Blueprint Configuration
-auth = Blueprint("auth", __name__)
+auth = Blueprint("auth", __name__, url_prefix='/account/')
 
 
-@auth.route("/account/register/", methods=['GET', 'POST'])
-@auth.route("/account/inscription/", methods=['GET', 'POST'])
+@auth.route("/register/", methods=['GET', 'POST'], strict_slashes=False)
+@auth.route("/inscription/", methods=['GET', 'POST'], strict_slashes=False)
 def registerPage():
 
     """
@@ -29,17 +29,19 @@ def registerPage():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data, username=form.username.data)
-        user.password =bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        db.session.add(user)
-        db.session.commit()
-
-        msg_success = f"""
-            Hey {form.username.data},
-            votre compte a été créé ! Connectez-vous maintenant !
-        """
-        flash(msg_success, "success")
-        return redirect(url_for('auth.loginPage'))
+        try:
+            user = User(email=form.email.data, username=form.username.data)
+            user.password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            db.session.add(user)
+            db.session.commit()
+            msg_success = f"""
+                Hey <b>{username}</b>,
+                votre compte a été créé ! Connectez-vous maintenant !
+            """
+            flash(msg_success, "success")
+            return redirect(url_for('auth.loginPage'))
+        except Exception as e:
+            return f"Une erreur s'est produite: {e}"
 
     page_title = "Je m'inscris"
 
@@ -49,8 +51,8 @@ def registerPage():
     )
 
 
-@auth.route("/account/login/", methods=['GET', 'POST'])
-@auth.route("/account/connexion/", methods=['GET', 'POST'])
+@auth.route("/login/", methods=['GET', 'POST'], strict_slashes=False)
+@auth.route("/connexion/", methods=['GET', 'POST'], strict_slashes=False)
 def loginPage():
 
     """
@@ -65,13 +67,18 @@ def loginPage():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.dashboardPage'))
-
-        flash("Combinaison nom d'utilisateur/mot de passe invalide.", "danger")
-        return redirect(url_for('auth.loginPage'))
+        try:
+            if user and bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(
+                    f"/account/{user.slug}/dashboard/"
+                )
+            
+            flash("Combinaison nom d'utilisateur/mot de passe invalide.", "danger")
+            return redirect(url_for('auth.loginPage'))
+        except Exception as e:
+            return f"Une erreur s'est produite: {e}"
 
     page_title = "Connexion"
 
@@ -81,8 +88,8 @@ def loginPage():
     )
 
 
-@auth.route('/account/logout/')
-@auth.route('/account/deconnexion/')
+@auth.route('/logout/', strict_slashes=False)
+@auth.route('/deconnexion/', strict_slashes=False)
 @login_required
 def logoutPage():
     """

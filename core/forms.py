@@ -2,7 +2,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
 from core.models import User
 
 
@@ -24,9 +24,9 @@ class RegistrationForm(FlaskForm):
     password = PasswordField(
         'Mot de passe',
         validators=[
-            DataRequired(),
+            InputRequired(),
             Length(
-                min=6,
+                min=6, max=18,
                 message='Choisissez un mot de passe plus fort.'
             )
         ]
@@ -34,7 +34,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField(
         'Confirmer le mot de passe',
         validators=[
-            DataRequired(),
+            InputRequired(),
             EqualTo(
                 'password',
                 message='Les deux mots de passe ne correspondent pas.'
