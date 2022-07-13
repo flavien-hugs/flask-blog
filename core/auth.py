@@ -91,12 +91,12 @@ def loginPage():
     )
 
 
-def save_picture(form_picture):
+def save_picture(picture):
     random_hex = secrets.token_hex(8)
-    _, extension = os.path.splitext(form_picture.filename)
+    _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
     picture_path = os.path.join(auth.root_path, 'media/user/', picture_fn)
-    form_picture.save(picture_path)
+    picture.save(picture_path)
 
     return picture_fn
 
