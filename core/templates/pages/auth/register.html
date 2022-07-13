@@ -29,6 +29,8 @@
 						
 						<form action="" method="POST">
 
+							{{ form.csrf_token }}
+							
 							{{ form.hidden_tag() }}
 
 							<div class="mb-3">
