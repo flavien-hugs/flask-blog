@@ -3,13 +3,14 @@
 from flask_login import current_user
 
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import(
-    DataRequired, InputRequired, Email, Length,
-    EqualTo, ValidationError
+    DataRequired, InputRequired, Email, Length, EqualTo,
+    ValidationError
 )
 from wtforms import(
-    StringField, TextAreaField, PasswordField,
-    SubmitField, BooleanField
+    StringField, TextAreaField, PasswordField, SubmitField,
+    BooleanField
 )
 
 from core.models import User
@@ -109,6 +110,10 @@ class UpdateAccountForm(FlaskForm):
     )
     biography = TextAreaField('Description')
     website = StringField("Votre site web")
+    picture = FileField(
+        'Photo de profile',
+        validators=[FileAllowed(['jpg', 'png'])]
+    )
     submit = SubmitField("Mettre à jour mon compte")
 
     def validate_username(self, username):
