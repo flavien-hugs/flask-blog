@@ -10,7 +10,7 @@
             <div class="navbar-nav flex-column">
                 <span class="navbar-header">Dashboard</span>
                 <ul class="list-unstyled ms-n2 mb-4">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.homePage') }}">
                             <i class="fe fe-home nav-icon"></i>
                             Tableau de bord
@@ -62,6 +62,8 @@
                             Supprimer votre comptre
                         </a>
                     </li>
+
+                    <hr class="my-5"/>
 
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" href="{{ url_for('auth.logoutPage') }}">

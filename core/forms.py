@@ -3,10 +3,15 @@
 from flask_login import current_user
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import(
-    DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
+    DataRequired, InputRequired, Email, Length,
+    EqualTo, ValidationError
 )
+from wtforms import(
+    StringField, TextAreaField, PasswordField,
+    SubmitField, BooleanField
+)
+
 from core.models import User
 
 
@@ -81,7 +86,9 @@ class LoginForm(FlaskForm):
         'Mot de passe',
         validators=[DataRequired()]
     )
-    remember = BooleanField('Se souvenir de moi')
+    remember = BooleanField(
+        'Se souvenir de moi',
+    )
     submit = SubmitField('Se connecter')
 
 
@@ -100,6 +107,8 @@ class UpdateAccountForm(FlaskForm):
             Email(message='Entrer une adresse email valide.')
         ]
     )
+    biography = TextAreaField('Description')
+    website = StringField("Votre site web")
     submit = SubmitField("Mettre à jour mon compte")
 
     def validate_username(self, username):
