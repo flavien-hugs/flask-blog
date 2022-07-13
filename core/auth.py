@@ -10,6 +10,8 @@ from flask import Blueprint, render_template, redirect, request, flash, url_for
 from core.models import User
 from core import db, bcrypt, login_manager
 from core.forms import RegistrationForm, LoginForm, UpdateAccountForm
+
+from PIL import Image
 from flask_login import login_user, logout_user, login_required, current_user
 
 
@@ -96,7 +98,11 @@ def save_picture(picture):
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
     picture_path = os.path.join(auth.root_path, 'media/user/', picture_fn)
-    picture.save(picture_path)
+
+    output_size = (256, 256)
+    thumb = Image.open(picture)
+    thumb.thumbnail(output_size)
+    thumb.save(picture_path)
 
     return picture_fn
 
