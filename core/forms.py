@@ -1,8 +1,12 @@
 # core.forms.py
 
+from flask_login import current_user
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
+from wtforms.validators import(
+    DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
+)
 from core.models import User
 
 
@@ -79,3 +83,43 @@ class LoginForm(FlaskForm):
     )
     remember = BooleanField('Se souvenir de moi')
     submit = SubmitField('Se connecter')
+
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField(
+        'Nom & prénoms',
+        validators=[
+            DataRequired(),
+            Length(min=2, max=50)
+        ]
+    )
+    email = StringField(
+        'Adresse Email',
+        validators=[
+            DataRequired(),
+            Email(message='Entrer une adresse email valide.')
+        ]
+    )
+    submit = SubmitField("Mettre à jour mon compte")
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError(
+                    f"""
+                    Cet nom '{username.data}' d'utilisateur est déjà utilisé.
+                    Veuillez choisir un autre nom !
+                    """
+                )
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError(
+                    f"""
+                    Cet adresse '{email.data}' est déjà utilisé.
+                    Veuillez choisir un autre nom !
+                    """
+                )
