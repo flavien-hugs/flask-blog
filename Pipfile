@@ -12,6 +12,7 @@ flask-sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-login = "*"
 python-dotenv = "*"
+uni-slugify = "*"
 
 [dev-packages]
 
