@@ -58,7 +58,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(
         db.String(20),
         nullable=True,
-        default='default.jpg'
+        default='user/default.jpg'
     )
     date_joined = db.Column(
         db.DateTime,

@@ -2,7 +2,7 @@
 Logged-in page routes.
 """
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 
 from flask_wtf.csrf import CSRFError
 from flask_login import login_required, current_user
@@ -77,9 +77,14 @@ def aboutPage():
 @login_required
 def dashboardPage():
     page_title = "Mon compte"
+
+    user_picture = url_for(
+        "static", filename=f"img/user/{current_user.image_file}"
+    )
     return render_template(
         'pages/auth/dashboard.html',
         current_user=current_user,
+        user_picture=user_picture,
         page_title=page_title
     )
 
