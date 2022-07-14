@@ -24,7 +24,7 @@ login_manager.login_message_category = 'info'
 from core import models
 from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
-
+from .post import post as post_blueprint
 
 db.init_app(app)
 
@@ -32,6 +32,8 @@ db.init_app(app)
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(main_blueprint)
+app.register_blueprint(post_blueprint)
+
 
 @app.cli.command('init_db')
 def init_db():
