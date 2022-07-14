@@ -137,3 +137,17 @@ class UpdateAccountForm(FlaskForm):
                     Veuillez choisir un autre nom !
                     """
                 )
+
+
+class PostForm(FlaskForm):
+    title = StringField(
+        "Titre de l'article", validators=[DataRequired()]
+    )
+    content = TextAreaField(
+        'Écrire votre article ici ..', validators=[DataRequired()]
+    )
+    picture = FileField(
+        "Image d'illustration",
+        validators=[FileAllowed(['jpg', 'png'])]
+    )
+    submit = SubmitField("Publier l'article")
