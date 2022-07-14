@@ -22,6 +22,13 @@ class User(db.Model, UserMixin):
         db.Integer,
         primary_key=True
     )
+    gender = db.RadioField(
+        'Civilité',
+        choices=[
+            ('H','Homme'),
+            ('F','Femme')
+        ]
+    )
     email = db.Column(
         db.String(80),
         unique=True,
@@ -105,7 +112,7 @@ class Post(db.Model):
     post_cover = db.Column(
         db.String(20),
         nullable=True,
-        default='default.jpg'
+        default='user/default.jpg'
     )
     date_posted = db.Column(
         db.DateTime,
