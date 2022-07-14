@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+
+{% block page_content %}
+	
+	{% set post_cover = 'media/post/', post.post_cover %}
+
+    <main class="py-14">
+    	<div class="container">
+    		<div class="offset-xl-2 col-xl-8 col-md-12">
+    			<div class="d-xl-flex ">
+    				<div class="mb-3 mb-md-0">
+    					<img width="56" height="56" src="{{ url_for('static', filename=post_cover) }}" alt="{{ post.slug }}" class="icon-shape border rounded-circle">
+    				</div>
+    				
+    				<div class="ms-xl-3  w-100 mt-3 mt-xl-0">
+    					<div class="d-flex justify-content-between mb-5">
+    						<div>
+    							<h1 class="mb-1 h2">{{ post.title }}</h1>
+    							<span>Auteur {{ post.author.username }}</span>
+    						</div>
+    					</div>
+    					
+    					<div>
+    						<div class="d-md-flex justify-content-between">
+    							<div>
+    								<i class="fe fe-message-circle text-muted"></i>
+    								<span class="ms-0">(131 commentaires)</span>
+    							</div>
+	    						<div class="mb-2 mb-md-0">
+	    							<span class="me-2">
+	    								<div>
+	    									<i class="fe fe-clock text-muted"></i>
+	    									<span>Publié le {{ post.date_posted.strftime("%d %B %Y") }}</span>
+	    								</div>
+	    							</span>
+	    						</div>
+	    					</div>
+    					</div>
+    				</div>
+    			</div>
+
+    			<hr class="my-4">
+
+    			<div class="mt-6">
+		            <h2 class="mb-3 fs-3">{{ page_title }}</h2>
+		            <p>
+		            	{{ post.content }}
+		            </p>
+          		</div>
+    		</div>
+    	</div>
+    </main>
+{% endblock page_content %}
