@@ -15,39 +15,24 @@ from core.models import User, Post
 main = Blueprint("main", __name__)
 
 
-posts = [
-    {
-        'author': 'Flavien HUGS',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 22, 2022'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 23, 2022'
-    }
-]
-
-
 @main.route("/", strict_slashes=False)
 @main.route("/home/", strict_slashes=False)
 @main.route("/index/", strict_slashes=False)
 @main.route("/accueil/", strict_slashes=False)
 def homePage():
-    return render_template(
-        'pages/index.html'
-    )
+    return render_template('pages/index.html')
 
 
 @main.route("/blog/", strict_slashes=False)
 @main.route("/posts/", strict_slashes=False)
 def blogListPage():
     page_title = "Blog"
+    posts = Post.query.all()
+
     return render_template(
         'pages/blog.html',
-        page_title=page_title, posts=posts
+        page_title=page_title,
+        posts=posts
     )
 
 
@@ -77,15 +62,20 @@ def aboutPage():
 @login_required
 def dashboardPage():
     page_title = "Mon compte"
-
-    user_picture = url_for(
-        "static", filename=f"img/user/{current_user.image_file}"
-    )
     return render_template(
-        'pages/auth/dashboard.html',
+        'auth/dashboard.html',
         current_user=current_user,
-        user_picture=user_picture,
         page_title=page_title
+    )
+
+
+@main.route("/article/<string:post_slug>/", methods=['GET'], strict_slashes=False)
+@login_required
+def postDetailPage(post_slug):
+    post = Post.query.filter_by(slug=post_slug).first()
+    return render_template(
+        'post/detail.html',
+        post=post, page_title=post.title
     )
 
 
