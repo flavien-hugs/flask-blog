@@ -1,0 +1,41 @@
+{% for post in posts %}
+	<article class="card card-bordered mb-3 card-hover cursor-pointer">
+		<div class="card-body">
+			<div>
+				<div class="d-xl-flex">
+					<div class="ms-xl-3 w-100 mt-3 mt-xl-1">
+						<div class="d-flex justify-content-between mb-5">
+							<div>
+								<h3 class="mb-1 fs-4">
+									<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="text-inherit">
+										{{ post.title }}
+									</a>
+								</h3>
+
+								<div>
+									<span>
+										Auteur
+										<b>{{ post.author.username }}</b>
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="d-md-flex justify-content-between">
+							<div class="mb-2 mb-md-0">
+								<span class="me-2">
+									<i class="fe fe-message-circle text-muted"></i>
+									<span class="ms-1">(131 commentaires)</span>
+								</span>
+							</div>
+							<div>
+								<i class="fe fe-clock text-muted"></i>
+								<span>Publié le {{ post.date_posted.strftime("%d %B %Y") }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+{% endfor %}
