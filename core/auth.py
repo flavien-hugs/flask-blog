@@ -51,7 +51,7 @@ def registerPage():
     page_title = "Je m'inscris"
 
     return render_template(
-        'pages/auth/register.html',
+        'auth/register.html',
         page_title=page_title, form=form
     )
 
@@ -88,12 +88,12 @@ def loginPage():
     page_title = "Connexion"
 
     return render_template(
-        'pages/auth/login.html',
+        'auth/login.html',
         page_title=page_title, form=form
     )
 
 
-def save_picture(picture):
+def save_profile_picture(picture):
     random_hex = secrets.token_hex(8)
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
@@ -115,7 +115,7 @@ def updateAccountPage():
     if form.validate_on_submit():
         try:
             if form.picture.data:
-                picture_file = save_picture(form.picture.data)
+                picture_file = save_profile_picture(form.picture.data)
                 current_user.image_file = picture_file
 
             current_user.email = form.email.data
@@ -129,17 +129,12 @@ def updateAccountPage():
         form.email.data = current_user.email
         form.username.data = current_user.username
 
-    user_picture = url_for(
-        "static", filename=f"media/user/{current_user.image_file}"
-    )
-
     page_title = "Modifier mon compte"
 
     return render_template(
-        'pages/auth/settings.html',
+        'auth/settings.html',
         form=form,
         current_user=current_user,
-        user_picture=user_picture,
         page_title=page_title,
     )
 
