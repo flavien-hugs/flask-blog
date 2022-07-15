@@ -14,8 +14,8 @@ from PIL import Image
 from flask_login import login_required, current_user
 
 from core import db
-from core.models import Post
 from core.forms import PostForm
+from core.models import Post, User
 
 # Blueprint Configuration
 post = Blueprint("post", __name__, url_prefix='/account/dashboard/')
@@ -25,7 +25,7 @@ def save_post_picture(picture):
     random_hex = secrets.token_hex(8)
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
-    picture_path = os.path.join(auth.root_path, 'media/post/', picture_fn)
+    picture_path = os.path.join(post.root_path, 'static/media/post/', picture_fn)
 
     output_size = (923, 498)
     thumb = Image.open(picture)
@@ -72,13 +72,15 @@ def createPostPage():
 @post.route("/posts/", methods=['GET'], strict_slashes=False)
 @login_required
 def postListPage():
-    author = current_user.id
-    posts = Post.query.filter_by(user_id=author)
+    author = User.query.filter_by(username=current_user.username).first_or_404()
+    posts = author.posts.order_by(Post.date_posted.desc()).all()
+    posts_count = author.posts.count()
     page_title = "Liste de vos articles"
-
     return render_template(
         'auth/posts.html',
-        posts=posts, page_title=page_title
+        posts=posts,
+        posts_count=posts_count,
+        page_title=page_title
     )
 
 
@@ -116,3 +118,18 @@ def postUpdatePage(post_id):
         form=form, post=post,
         page_title=page_title
     )
+
+
+@post.route("/post/<int:post_id>/delete/", methods=['POST'], strict_slashes=False)
+@login_required
+def postDeletePage(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        flash(f"l'article '{post.title.capitalize()}' a été supprimer !", 'success')
+        return redirect(url_for('post.postListPage'))
+    except Exception as e:
+        return f"Une erreur s'est produite: {e}"
