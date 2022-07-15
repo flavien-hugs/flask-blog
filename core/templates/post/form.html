@@ -1,0 +1,54 @@
+<form method="POST" action="." class="row" enctype="multipart/form-data">
+	{{ form.csrf_token }}
+
+	{{ form.hidden_tag() }}
+
+	<div class="mb-3 col-12 col-md-12">
+		{{ form.title.label(class="form-label") }}
+
+		{% if form.title.errors %}
+			{{ form.title(class="form-control shadow-none is-invalid") }}
+			<div class="invalid-feedback">
+				{% for error in form.title.errors %}
+				<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% else %}
+			{{ form.title(class="form-control shadow-none", placeholder="Titre de votre article") }}
+		{% endif %}
+	</div>
+
+	<div class="mb-3 col-12 col-md-12">
+		{{ form.content.label(class="form-label") }}
+
+		{% if form.content.errors %}
+			{{ form.content(class="form-control shadow-none is-invalid") }}
+			<div class="invalid-feedback">
+				{% for error in form.content.errors %}
+				<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% else %}
+			{{ form.content(class="form-control shadow-none", placeholder="Éditer votre article ...") }}
+		{% endif %}
+	</div>
+
+	<div class="mb-3 col-12 col-md-12">
+		{{ form.picture.label(class="form-label") }}
+
+		{% if form.picture.errors %}
+			{{ form.picture(class="form-control-file shadow-none is-invalid") }}
+			<div class="invalid-feedback">
+				{% for error in form.picture.errors %}
+				<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% else %}
+			{{ form.picture(class="form-control-file shadow-none", placeholder="Photo de profile") }}
+		{% endif %}
+	</div>
+
+	<div class="d-grid">
+		{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
+	</div>
+</form>
