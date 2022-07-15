@@ -7,7 +7,7 @@
 {% block page_content %}
 	<div class="container d-flex flex-column">
 		<div class="row align-items-center justify-content-center g-0 min-vh-100">
-			<div class="col-lg-5 col-md-8 py-8 py-xl-0">
+			<div class="col-lg-7 col-md-8 py-8 py-xl-0">
 
 				{% include "paths/_alert.html" %}
 
@@ -27,13 +27,28 @@
 							</span>
 						</div>
 						
-						<form action="" method="POST">
+						<form class="row" action="" method="POST">
 
 							{{ form.csrf_token }}
 							
 							{{ form.hidden_tag() }}
 
-							<div class="mb-3">
+							<div class="mb-3 col-md-3">
+								{{ form.gender.label(class="form-label") }}
+
+								{% if form.gender.errors %}
+								    {{ form.gender(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.gender.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+								    {{ form.gender(class="form-control form-select shadow-none") }}
+								{% endif %}
+							</div>
+
+							<div class="mb-3 col-md-9">
 								{{ form.username.label(class="form-label") }}
 
 								{% if form.username.errors %}
