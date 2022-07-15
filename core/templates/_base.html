@@ -26,9 +26,11 @@
         <meta property="og:image:width" content="1000"/>
         <meta property="og:image:height" content="523"/>
 
-        <link rel="shortcut icon" href="{{ url_for('static', filename='dist/img/favicon.png') }}" type="image/x-icon"/>
-        <link type="text/css" href="{{ url_for('static', filename='css/theme.min.css') }}" rel="stylesheet">
-        <link type="text/css" href="{{ url_for('static', filename='fonts/feather/feather.css') }}" rel="stylesheet">
+        {% block css %}
+            <link rel="shortcut icon" href="{{ url_for('static', filename='dist/img/favicon.png') }}" type="image/x-icon"/>
+            <link type="text/css" href="{{ url_for('static', filename='css/theme.min.css') }}" rel="stylesheet">
+            <link type="text/css" href="{{ url_for('static', filename='fonts/feather/feather.css') }}" rel="stylesheet">
+        {% endblock css %}
         
         <title>
             {% if page_title %}
@@ -47,5 +49,11 @@
         {% block page_content %}
             
         {% endblock page_content %}
+
+        {% block js %}
+            <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/theme.min.js') }}"></script>
+        {% endblock js %}
     </body>
 </html>
