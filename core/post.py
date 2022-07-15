@@ -75,8 +75,7 @@ def postListPage():
     page_title = "Liste de vos articles"
     page = request.args.get('page', 1, type=int)
     author = User.query.filter_by(username=current_user.username).first_or_404()
-    posts_list = author.posts.order_by(Post.date_posted.desc())
-    pagination = posts_list.paginate(page=page, per_page=1, error_out=False)
+    pagination = author.posts.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5, error_out=False)
     posts = pagination.items
     posts_count = author.posts.count()
     
