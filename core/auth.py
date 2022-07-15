@@ -35,12 +35,12 @@ def registerPage():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
-            user = User(email=form.email.data, username=form.username.data)
+            user = User(gender=form.gender.data, email=form.email.data, username=form.username.data)
             user.password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             db.session.add(user)
             db.session.commit()
             msg_success = f"""
-                Hey <b>{username}</b>,
+                Hey {form.username.data},
                 votre compte a été créé ! Connectez-vous maintenant !
             """
             flash(msg_success, "success")
@@ -76,9 +76,11 @@ def loginPage():
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(
-                    f"/account/{user.slug}/dashboard/"
-                )
+                if next_page is None or not next_page.startswith('/'):
+                    next_page = url_for('main.dashboardPage')
+                return redirect(next_page)
+                
+                # return redirect(next_page) if next_page else redirect(url_for('main.dashboardPage'))
 
             flash("Combinaison nom d'utilisateur/mot de passe invalide.", "danger")
             return redirect(url_for('auth.loginPage'))
@@ -97,7 +99,7 @@ def save_profile_picture(picture):
     random_hex = secrets.token_hex(8)
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
-    picture_path = os.path.join(auth.root_path, 'media/user/', picture_fn)
+    picture_path = os.path.join(auth.root_path, 'static/media/user/', picture_fn)
 
     output_size = (256, 256)
     thumb = Image.open(picture)
@@ -119,7 +121,10 @@ def updateAccountPage():
                 current_user.image_file = picture_file
 
             current_user.email = form.email.data
+            current_user.website = form.website.data
             current_user.username = form.username.data
+            current_user.biography = form.biography.data
+            db.session.add(current_user._get_current_object())
             db.session.commit()
             flash("Votre compte a été mise à jour avec succès.", "success")
             return redirect(url_for('auth.updateAccountPage'))
@@ -127,7 +132,9 @@ def updateAccountPage():
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
         form.email.data = current_user.email
+        form.website.data = current_user.website
         form.username.data = current_user.username
+        form.biography.data = current_user.biography
 
     page_title = "Modifier mon compte"
 
