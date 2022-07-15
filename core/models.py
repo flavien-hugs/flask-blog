@@ -1,13 +1,14 @@
 # core.models.py
 
+import hashlib
 import logging as lg
 from datetime import datetime
 
-from core import db, login_manager
-from flask_login import UserMixin
-from flask import redirect, flash, url_for
+from flask import redirect, flash, url_for, request
 
 from slugify import slugify
+from flask_login import UserMixin
+from core import db, login_manager
 
 
 class User(db.Model, UserMixin):
@@ -22,12 +23,10 @@ class User(db.Model, UserMixin):
         db.Integer,
         primary_key=True
     )
-    gender = db.RadioField(
-        'Civilité',
-        choices=[
-            ('H','Homme'),
-            ('F','Femme')
-        ]
+    gender = db.Column(
+        db.String(5),
+        default="Mr",
+        nullable=False,
     )
     email = db.Column(
         db.String(80),
@@ -52,7 +51,7 @@ class User(db.Model, UserMixin):
         primary_key=False
     )
     biography = db.Column(
-        db.String(180),
+        db.Text,
         nullable=False,
         default="about me !"
     )
@@ -65,7 +64,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(
         db.String(20),
         nullable=True,
-        default='user/default.jpg'
+        default='default.jpg'
     )
     date_joined = db.Column(
         db.DateTime,
@@ -77,11 +76,22 @@ class User(db.Model, UserMixin):
     posts = db.relationship(
         'Post',
         backref='author',
-        lazy=True
+        lazy='dynamic'
     )
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return f"User({self.username}', '{self.email}')"
+
+    def gravatar_hash(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+
+    def gravatar(self, size=256, default='identicon', rating='g'):
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+            hasher = self.image_file or self.gravatar_hash()
+        return f"{url}/{hasher}?s={size}&d={default}&r={rating}"
 
     @staticmethod
     def generate_user_slug(target, value, oldvalue, initiator):
@@ -106,13 +116,12 @@ class Post(db.Model):
         nullable=False
     )
     content = db.Column(
-        db.Text,
-        nullable=False
+        db.Text
     )
     post_cover = db.Column(
         db.String(20),
         nullable=True,
-        default='user/default.jpg'
+        default='default.jpg'
     )
     date_posted = db.Column(
         db.DateTime,
@@ -144,7 +153,7 @@ db.event.listen(User.username, 'set', User.generate_user_slug, retval=False)
 db.event.listen(Post.title, 'set', Post.generate_post_slug, retval=False)
 
 
-user = User(username="Flavien HUGS", email="flavienhugs@pm.me", password="password")
+user = User(username="Flavien HUGS",email="flavienhugs@pm.me", password="password")
 post = Post(user_id=1, title="Post one", content="First post content one !")
 
 
