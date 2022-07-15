@@ -72,14 +72,19 @@ def createPostPage():
 @post.route("/posts/", methods=['GET'], strict_slashes=False)
 @login_required
 def postListPage():
-    author = User.query.filter_by(username=current_user.username).first_or_404()
-    posts = author.posts.order_by(Post.date_posted.desc()).all()
-    posts_count = author.posts.count()
     page_title = "Liste de vos articles"
+    page = request.args.get('page', 1, type=int)
+    author = User.query.filter_by(username=current_user.username).first_or_404()
+    posts_list = author.posts.order_by(Post.date_posted.desc())
+    pagination = posts_list.paginate(page=page, per_page=1, error_out=False)
+    posts = pagination.items
+    posts_count = author.posts.count()
+    
     return render_template(
         'auth/posts.html',
         posts=posts,
         posts_count=posts_count,
+        pagination=pagination,
         page_title=page_title
     )
 
