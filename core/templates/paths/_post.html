@@ -8,7 +8,7 @@
 							<div>
 								<h3 class="mb-1 fs-4">
 									<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="text-inherit">
-										{{ post.title }}
+										{{ post.title.capitalize() }}
 									</a>
 								</h3>
 
