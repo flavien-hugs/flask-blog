@@ -2,7 +2,7 @@
 Logged-in page routes.
 """
 
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, request
 
 from flask_wtf.csrf import CSRFError
 from flask_login import login_required, current_user
@@ -27,12 +27,14 @@ def homePage():
 @main.route("/posts/", strict_slashes=False)
 def blogListPage():
     page_title = "Blog"
-    posts = Post.query.all()
-
+    page = request.args.get('page', 1, type=int)
+    posts_list = Post.query.order_by(Post.date_posted.desc())
+    pagination = posts_list.paginate(page=page, per_page=8, error_out=False)
+    posts = pagination.items
+    
     return render_template(
-        'pages/blog.html',
-        page_title=page_title,
-        posts=posts
+        'pages/blog.html', page_title=page_title,
+        posts=posts, pagination=pagination
     )
 
 
