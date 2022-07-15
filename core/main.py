@@ -90,7 +90,7 @@ def pageNotFound(error):
 
 
 @main.errorhandler(500)
-def serverError(error):
+def internalServerError(error):
     page_title = "Quelques choses à mal tourné"
     return render_template(
         'pages/error.html',
@@ -100,8 +100,8 @@ def serverError(error):
 
 
 @main.errorhandler(CSRFError)
-def handle_csrf_error(e):
+def handleCsrfError(error):
     return render_template(
         'pages/error.html',
-        error=e.description
+        error=error.description
     ), 400
