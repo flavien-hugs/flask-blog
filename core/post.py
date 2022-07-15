@@ -77,7 +77,6 @@ def postListPage():
     author = User.query.filter_by(username=current_user.username).first_or_404()
     pagination = author.posts.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5, error_out=False)
     posts = pagination.items
-    posts_count = author.posts.count()
     
     return render_template(
         'auth/posts.html',
