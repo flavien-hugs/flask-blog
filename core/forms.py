@@ -6,22 +6,38 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import(
     DataRequired, InputRequired, Email, Length, EqualTo,
-    ValidationError
+    ValidationError, Regexp
 )
 from wtforms import(
     StringField, TextAreaField, PasswordField, SubmitField,
-    BooleanField
+    BooleanField, SelectField
 )
 
 from core.models import User
 
 
+GENDER_CHOICES = [
+    ('Mr', 'Mr'),
+    ('Mme', 'Mme'),
+    ('Mlle', 'Mlle')
+]
+
+
 class RegistrationForm(FlaskForm):
+    gender = SelectField(
+        'Civilité',
+        choices=GENDER_CHOICES,
+        validators=[DataRequired()]
+    )
     username = StringField(
         'Nom & prénoms',
         validators=[
             DataRequired(),
-            Length(min=2, max=50)
+            Length(min=2, max=50),
+            Regexp(
+                '^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                "Les noms d'utilisateur ne doivent comporter que des lettres, des chiffres, des points ou des symboles." 'underscores'
+            )
         ]
     )
     email = StringField(
@@ -94,6 +110,11 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
+    gender = SelectField(
+        'Civilité',
+        choices=GENDER_CHOICES,
+        validators=[DataRequired()]
+    )
     username = StringField(
         'Nom & prénoms',
         validators=[
@@ -108,7 +129,10 @@ class UpdateAccountForm(FlaskForm):
             Email(message='Entrer une adresse email valide.')
         ]
     )
-    biography = TextAreaField('Description')
+    biography = TextAreaField(
+        'Description',
+        validators=[DataRequired()]
+    )
     website = StringField("Votre site web")
     picture = FileField(
         'Photo de profile',
@@ -144,7 +168,8 @@ class PostForm(FlaskForm):
         "Titre de l'article", validators=[DataRequired()]
     )
     content = TextAreaField(
-        'Écrire votre article ici ..', validators=[DataRequired()]
+        "Qu'est-ce qui vous préoccupe à ce sujet ?",
+        validators=[DataRequired()]
     )
     picture = FileField(
         "Image d'illustration",
