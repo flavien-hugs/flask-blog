@@ -1,0 +1,77 @@
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between border-bottom-0">
+        <h3 class="mb-0">Vos articles</h3>
+
+        <a href="{{ url_for('post.postListPage')}}"
+            class="text-uppercase fw-bold">
+            voir plus <i class="fe fe-chevron-right ms-2"></i>
+        </a>
+    </div>
+
+    <div class="table-responsive border-0">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="border-0">articles</th>
+                    <th class="border-0">publication</th>
+                    <th class="border-0"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for post in posts %}
+                
+                    {% set post_cover='media/post/' + post.post_cover %}
+
+                    <tr>
+                        <td class="align-middle border-top-0">
+                            <a target="_blank" href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}">
+                                <div class="d-lg-flex align-items-center">
+                                    <img
+                                        width="100" height="60"
+                                        src="{{ url_for('static', filename=post_cover) }}"
+                                        alt="{{ post.slug }}" class="rounded img-4by3-lg">
+                                    <h5 class="mb-0 ms-lg-3 mt-2 mt-lg-0 text-primary-hover">
+                                        {{ post.title.capitalize() }}
+                                    </h5>
+                                </div>
+                            </a>
+                        </td>
+                        <td class="align-middle border-top-0">{{ post.date_posted.strftime("%d %B %Y") }}</td>
+                        <td class="align-middle d-flex justify-content-around border-top-0">
+                            <a href="{{ url_for('post.postUpdatePage', post_id=post.id) }}"
+                                class="text-muted btn btn-sm btn-primary me-2">
+                                <i class="fe fe-edit text-white fw-bold"></i>
+                            </a>
+                            <a type="button" class="text-muted btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fe fe-trash text-white fw-bold"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalPost" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalPost">
+                                        Supprimer l'article
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ post.title.capitalize() }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Annuler</button>
+                                    <form action="{{ url_for('post.postDeletePage', post_id=post.id) }}" method="POST">
+                                        <input type="submit" class="btn btn-sm btn-danger" value="Supprimer">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
