@@ -64,10 +64,17 @@ def aboutPage():
 @login_required
 def dashboardPage():
     page_title = "Mon compte"
+    
+    author = User.query.filter_by(username=current_user.username).first_or_404()
+    posts = author.posts.order_by(Post.date_posted.desc())
+    posts_count = author.posts.count()
+
     return render_template(
         'auth/dashboard.html',
-        current_user=current_user,
-        page_title=page_title
+        posts=posts,
+        page_title=page_title,
+        posts_count=posts_count,
+        current_user=current_user
     )
 
 

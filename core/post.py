@@ -81,7 +81,6 @@ def postListPage():
     return render_template(
         'auth/posts.html',
         posts=posts,
-        posts_count=posts_count,
         pagination=pagination,
         page_title=page_title
     )
