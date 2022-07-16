@@ -20,7 +20,8 @@ main = Blueprint("main", __name__)
 @main.route("/index/", strict_slashes=False)
 @main.route("/accueil/", strict_slashes=False)
 def homePage():
-    return render_template('pages/index.html')
+    posts = Post.query.order_by(Post.date_posted.desc())[:6]
+    return render_template('pages/index.html', posts=posts)
 
 
 @main.route("/blog/", strict_slashes=False)
@@ -79,7 +80,6 @@ def dashboardPage():
 
 
 @main.route("/article/<string:post_slug>/", methods=['GET'], strict_slashes=False)
-@login_required
 def postDetailPage(post_slug):
     post = Post.query.filter_by(slug=post_slug).first()
     return render_template(
