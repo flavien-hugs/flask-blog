@@ -1,14 +1,108 @@
 {% extends '_base.html' %}
 
 {% block page_content %}
-    {% include "paths/_header.html" %}
+    <main>
 
-    <main class="py-8">
-        <div class="container">
-            {% block content %}
-                
-            {% endblock content %}
-        </div>
+        <section class="bg-light-primary py-lg-14 py-12 bg-cover">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-12">
+                        <div class="">
+                            <div class=" text-center text-md-start ">
+                                <h1 class=" display-2 fw-bold mb-3">Find your dream job that you love to do.</h1>
+                                <p class="lead">The largest remote work community in the world. Sign up and post a job or create your developer profile.</p>
+                            </div>
+
+                            <div class="mt-8">
+                                <span class=" fs-4">Currently listing 30,642 jobs from 5,717 companies</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="offset-lg-1 col-lg-5 col-12 text-center">
+                        <div class="position-relative ">
+                            <img src="{{ url_for('static', filename='img/hero-section.png') }}" class="img-fluid">
+                            <div class="position-absolute top-0 mt-7 ms-n6 ms-md-n6 ms-lg-n12 start-0">
+                                <img src="{{ url_for('static', filename='img/hero-block-1.svg') }}" class="img-fluid">
+                            </div>
+                            <div class="position-absolute bottom-0 mb-12 me-n6 me-md-n4 me-lg-n12 end-0 ">
+                                <img src="{{ url_for('static', filename='img/hero-block-2.svg') }}" class="img-fluid">
+                            </div>
+                            <div class="position-absolute bottom-0 mb-n4 ms-n1 ms-md-n4 ms-lg-n7 start-0">
+                                <img src="{{ url_for('static', filename='img/hero-block-3.svg') }}" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-lg-12 py-8 pb-8">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-2 col-xl-8 col-md-12 col-12">
+                        <div class=" text-center mb-8">
+                            <span class="text-uppercase text-primary fw-semi-bold ls-md">Latest Job Opening</span>
+                            <h2 class="h1 fw-bold mt-3">Explore remote friendly, flexible job opportunities.</h2>
+                        </div>
+
+                        {% include "paths/_post.html" %}
+                        <div class="mt-6 text-center">
+                            <a href="{{ url_for('main.blogListPage') }}" class="btn btn-outline-primary">
+                                Browse All Jobs Postings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-lg-12 bg-light pt-8 py-10">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-1 col-xl-10 col-md-12 col-12">
+                        <div class="row text-center">
+                            <div class="col-md-12 px-lg-10 mb-8 mt-6">
+                                <span class="text-uppercase text-primary fw-semi-bold ls-md">Process</span>
+                                <h2 class="h1 fw-bold mt-3">How It Works</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="row gy-6">
+                            <div class="col-md-4 col-12">
+                                <div class=" text-center">
+                                    <div class="icon-shape icon-lg border border-primary border-2 fs-3 rounded-circle mb-4 process-line text-primary smooth-shadow-md">1</div>
+                                    <h3>Click on 'Post a job' </h3>
+                                    <p class="mb-0 px-4">Fill in the details of the job be sure to
+                                      include your location restrictions if you have em!
+                                  </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-12">
+                                <div class=" text-center">
+                                    <div class="icon-shape icon-lg border border-primary border-2 fs-3 rounded-circle mb-4 process-line text-primary smooth-shadow-md">2</div>
+                                
+                                    <h3>Select an upgrade if required </h3>
+                                
+                                    <p class="mb-0 px-2">The base price for a job listing on Geeks is $29 per month. Choose one of our optional upgrades to gain more visibility to your listing.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-12">
+                                <div class=" text-center">
+                                    <div class="icon-shape icon-lg border border-primary border-2 fs-3 rounded-circle mb-4 text-primary smooth-shadow-md">3</div>
+
+                                    <h3>Purchase the listing </h3>
+
+                                    <p class="mb-0 px-3">Preview your listing and once you are ready to post it you can add your billing information.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     {% include "paths/_footer.html" %}

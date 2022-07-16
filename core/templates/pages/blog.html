@@ -1,40 +1,23 @@
 {% extends "pages/index.html" %}
 
-{% block content %}
-    <div class="row">
-        {% include "paths/_sidebar.html" %}
-
-        <div class="col-xl-9 col-md-8 mb-6 mb-md-0">
-            <div class="row align-items-center mb-4">
-                <div class="col">
-                    <p class="mb-0">1 - 20 of 86 IT Manager Jobs in India</p>
-                </div>
-                <div class="col-auto">
-                    <div class="d-flex ">
-                        <div class="nav btn-group flex-nowrap" role="tablist">
-                            <a href="job-grid.html" class="btn btn-outline-white btn-sm d-flex align-items-center">
-                                <span class="fe fe-grid"></span>
-                            </a>
-
-                            <a href="job-listing.html" class="btn btn-outline-white active btn-sm  d-flex align-items-center ">
-                                <span class="fe fe-list"></span>
-                            </a>
-                        </div>
-
-                        <div class="ms-3">
-                            <select class="selectpicker form-control" data-width="100%">
-                                <option value="">Sorting</option>
-                                <option value="Newest">Newest</option>
-                                <option value="Oldest">Oldest</option>
-                            </select>
+{% block page_content %}
+    <main class="py-8">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-9 col-md-8 mb-6 mb-md-0">
+                    <div class="row align-items-center mb-4">
+                        <div class="col">
+                            <p class="mb-0">{{ pagination.page }} sur {{ pagination.total }} articles</p>
                         </div>
                     </div>
+
+                    {% include "paths/_post.html" %}
+
+                    {% include "paths/_paginate.html" %}
                 </div>
             </div>
-
-            {% include "paths/_post.html" %}
-
-            {% include "paths/_paginate.html" %}
         </div>
-    </div>
-{% endblock content %}
+    </main>
+
+    {% include "paths/_footer.html" %}
+{% endblock page_content %}
