@@ -134,5 +134,8 @@
 				</form>
 			</div>
 		</div>
-	</div>     
+	</div>
+
+	{{ ckeditor.load(pkg_type="basic") }}
+	{{ ckeditor.config(name='biography') }}     
 {% endblock dashboard_content %}
