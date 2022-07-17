@@ -9,11 +9,12 @@ from wtforms.validators import(
     ValidationError, Regexp
 )
 from wtforms import(
-    StringField, TextAreaField, PasswordField, SubmitField,
+    StringField, PasswordField, SubmitField,
     BooleanField, SelectField
 )
 
 from core.models import User
+from flask_ckeditor import CKEditorField
 
 
 GENDER_CHOICES = [
@@ -129,7 +130,7 @@ class UpdateAccountForm(FlaskForm):
             Email(message='Entrer une adresse email valide.')
         ]
     )
-    biography = TextAreaField(
+    biography = CKEditorField(
         'Description',
         validators=[DataRequired()]
     )
@@ -167,7 +168,7 @@ class PostForm(FlaskForm):
     title = StringField(
         "Titre de l'article", validators=[DataRequired()]
     )
-    content = TextAreaField(
+    content = CKEditorField(
         "Qu'est-ce qui vous préoccupe à ce sujet ?",
         validators=[DataRequired()]
     )
