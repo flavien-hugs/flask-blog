@@ -52,3 +52,6 @@
 		{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
 	</div>
 </form>
+
+{{ ckeditor.load(pkg_type="basic") }}
+{{ ckeditor.config(name='content') }}
