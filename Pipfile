@@ -15,6 +15,7 @@ python-dotenv = "*"
 uni-slugify = "*"
 pillow = "*"
 bleach = {extras = ["css"], version = "*"}
+flask-ckeditor = "*"
 
 [dev-packages]
 
