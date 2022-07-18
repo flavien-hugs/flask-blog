@@ -8,11 +8,17 @@ import secrets
 from flask import Blueprint, render_template, redirect, request, flash, url_for
 
 from core.models import User
-from core import db, bcrypt, login_manager
-from core.forms import RegistrationForm, LoginForm, UpdateAccountForm
-
+from core import db, bcrypt, login_manager, mail
+from core.forms import(
+    RegistrationForm, LoginForm, UpdateAccountForm,
+    RequestPasswordResetForm, ResetPasswordForm
+)
+from flask_mail import Message
 from PIL import Image
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import(
+    login_user, logout_user, login_required,
+    current_user
+)
 
 
 # Blueprint Configuration
@@ -79,7 +85,7 @@ def loginPage():
                 if next_page is None or not next_page.startswith('/'):
                     next_page = url_for('main.dashboardPage')
                 return redirect(next_page)
-                
+
                 # return redirect(next_page) if next_page else redirect(url_for('main.dashboardPage'))
 
             flash("Combinaison nom d'utilisateur/mot de passe invalide.", "danger")
@@ -92,6 +98,68 @@ def loginPage():
     return render_template(
         'auth/login.html',
         page_title=page_title, form=form
+    )
+
+
+def send_reset_email(user):
+    token = user.gravatar_hash()
+    msg = Message(
+        "Demande de réinitialisation de mot de passe",
+        sender='noreply@blog.unsta.me',
+        recipients=[current_user.email]
+    )
+    msg.body = f'''Pour réinitialiser votre mot de passe, visitez le lien suivant:
+    {url_for('auth.resetTokenPage', token=token, _external=True)}.
+
+    Si vous n'avez pas fait cette demande, ignorez simplement cet e-mail et aucun changement ne sera effectué.
+    '''
+    mail.send(msg)
+
+
+@auth.route("/reset/password/", methods=['GET', 'POST'], strict_slashes=False)
+def resetRequestPage():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.homePage'))
+
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash(
+            "Un courriel a été envoyé avec les instructions pour réinitialiser votre mot de passe.",
+            'info'
+        )
+        return redirect(url_for('auth.loginPage'))
+
+    page_title = 'Réinitialiser votre mot de passe'
+    return render_template('auth/resetpwd.html', page_title=page_title, form=form)
+
+
+@auth.route("/reset/password/<token>/", methods=['GET', 'POST'], strict_slashes=False)
+def resetTokenPage(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.homePage'))
+
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash("Ce jeton est invalide ou a expiré.", 'warning')
+        return redirect(url_for('auth.resetRequestPage'))
+
+    form = ResetPasswordForm()
+    try:
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash("Votre mot de passe a été mise à jour avec succès !", "success")
+        return redirect(url_for('auth.loginPage'))
+    except Exception as e:
+        return f"Une erreur s'est produite: {e}"
+
+    page_title = 'Changer votre mot de passe'
+    return render_template(
+        'auth/changepwd.html',
+        page_title=page_title,
+        form=form
     )
 
 

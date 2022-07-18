@@ -6,16 +6,19 @@ import logging as lg
 
 from flask import Flask
 
+from flask_mail import Mail
 from flask_bcrypt import Bcrypt
+from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_ckeditor import CKEditor
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 ckeditor = CKEditor(app)
+mail = Mail(app)
+
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.loginPage'
