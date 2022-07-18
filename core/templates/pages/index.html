@@ -9,12 +9,19 @@
                     <div class="col-lg-6 col-12">
                         <div class="">
                             <div class=" text-center text-md-start ">
-                                <h1 class=" display-2 fw-bold mb-3">Find your dream job that you love to do.</h1>
-                                <p class="lead">The largest remote work community in the world. Sign up and post a job or create your developer profile.</p>
+                                <h1 class="display-3 fw-bold mb-3">
+                                    Prêt à conquérir le monde avec vos mots ?
+                                </h1>
+                                <p class="lead">
+                                    Les plus grands(es) bloggueurs(ses) du monde.
+                                    Inscrivez-vous pour créer votre profil de blogueur et publiezr vos articles.
+                                </p>
                             </div>
 
                             <div class="mt-8">
-                                <span class=" fs-4">Currently listing 30,642 jobs from 5,717 companies</span>
+                                <span class="fs-4">
+                                    Liste actuelle de {{ posts_count }} articles de {{ authors_count }} auteurs.
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -40,16 +47,21 @@
         <section class="py-lg-12 py-8 pb-8">
             <div class="container">
                 <div class="row">
-                    <div class="offset-xl-2 col-xl-8 col-md-12 col-12">
+                    <div class="offset-xl-2 col-xl-9 col-md-12 col-12">
                         <div class=" text-center mb-8">
-                            <span class="text-uppercase text-primary fw-semi-bold ls-md">Latest Job Opening</span>
-                            <h2 class="h1 fw-bold mt-3">Explore remote friendly, flexible job opportunities.</h2>
+                            <span class="text-uppercase text-primary fw-semi-bold ls-md">
+                                Nos derniers articles publiés
+                            </span>
+                            <h2 class="h1 fw-bold mt-3">
+                                Découvrez nos articles pour booster votre carrière.
+                            </h2>
                         </div>
 
                         {% include "paths/_post.html" %}
+
                         <div class="mt-6 text-center">
-                            <a href="{{ url_for('main.blogListPage') }}" class="btn btn-outline-primary">
-                                Browse All Jobs Postings
+                            <a href="{{ url_for('main.blogListPage') }}" class="btn btn-outline-primary text-uppercase">
+                                afficher tous les artilcles
                             </a>
                         </div>
                     </div>
