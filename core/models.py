@@ -70,8 +70,6 @@ class User(db.Model, UserMixin):
     date_joined = db.Column(
         db.DateTime,
         nullable=False,
-        index=False,
-        unique=False,
         default=datetime.utcnow()
     )
     posts = db.relationship(
@@ -79,7 +77,7 @@ class User(db.Model, UserMixin):
         backref='author',
         lazy='dynamic'
     )
-    
+
     def __repr__(self):
         return f"User({self.username}', '{self.email}')"
 
@@ -167,14 +165,7 @@ db.event.listen(User.username, 'set', User.generate_user_slug, retval=False)
 db.event.listen(Post.title, 'set', Post.generate_post_slug, retval=False)
 
 
-user = User(username="Flavien HUGS",email="flavienhugs@pm.me", password="password")
-post = Post(user_id=1, title="Post one", content="First post content one !")
-
-
 def init_database():
-    db.drop_all()
     db.create_all()
-    db.session.add(user)
-    db.session.add(post)
     db.session.commit()
     lg.warning('Database initialized !')
