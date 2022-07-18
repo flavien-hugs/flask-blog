@@ -15,14 +15,12 @@
 					<div class="card-body p-6">
 						<div class="mb-4">
 							<a href="{{ url_for('main.homePage') }}">
-								<img src="{{ url_for('static', filename='img/logo.svg') }}" class="mb-4" alt="login">
+								<img src="{{ url_for('static', filename='img/logo.svg') }}"
+								class="mb-4" alt="login">
 							</a>
 
-							<h1 class="mb-1 fw-bold">{{ page_title }}</h1>
-							<span>
-								Vous n'avez pas de compte ?
-								<a href="{{ url_for('auth.registerPage') }}" class="ms-1">Inscrivez-vous</a>
-							</span>
+							<h1 class="mb-1 fw-bold">Mot de passe oublié ?</h1>
+							<p>Entrer votre adresse e-mail pour réinitialiser votre mot de passe.</p>
 						</div>
 
 						<form action="" method="POST">
@@ -46,35 +44,14 @@
 								{% endif %}
 							</div>
 
-							<div class="mb-3">
-								{{ form.password.label(class="form-label") }}
-
-								{% if form.password.errors %}
-								    {{ form.password(class="form-control shadow-none is-invalid") }}
-									<div class="invalid-feedback">
-										{% for error in form.password.errors %}
-											<span>{{ error }}</span>
-										{% endfor %}
-									</div>
-								{% else %}
-									{{ form.password(class="form-control shadow-none", placeholder="********") }}
-								{% endif %}
-							</div>
-
-
-							<div class="d-lg-flex justify-content-between align-items-center mb-4">
-								<div class="form-check">
-									{{ form.remember(class="form-check-input shadow-none")}}
-									{{ form.remember.label(class="form-check-label")}}
-								</div>
-								<div>
-									<a href="{{ url_for('auth.resetRequestPage') }}">Mot de passe oublié ?</a>
-								</div>
-							</div>
-
-							<div class="d-grid">
+							<div class="mb-3 d-grid">
 								{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
 							</div>
+
+							<span>
+								Retourner à la page de
+								<a class="fw-bold" href="{{ url_for('auth.loginPage') }}">connexion</a>
+							</span>
 						</form>
 					</div>
 				</div>

@@ -1,0 +1,53 @@
+{% extends "auth/dashboard.html" %}
+
+{% block dashboard_content %}
+	<div class="card">
+		<div class="card-header">
+			<h3 class="mb-0">{{ page_title.capitalize() }}</h3>
+		</div>
+
+		<div class="card-body">
+			<div>
+				<form method="POST" action="." class="row">
+					{{ form.csrf_token }}
+							
+					{{ form.hidden_tag() }}
+
+					<div class="mb-3 col-12 col-md-3">
+						{{ form.password.label(class="form-label") }}
+
+						{% if form.password.errors %}
+							{{ form.password(class="form-control shadow-none is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.password.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.password(class="form-control shadow-none", placeholder="Entrer le nouveau mot de passe") }}
+						{% endif %}
+					</div>
+
+					<div class="mb-3 col-12 col-md-9">
+						{{ form.confirm_password.label(class="form-label") }}
+
+						{% if form.confirm_password.errors %}
+							{{ form.confirm_password(class="form-control shadow-none is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.confirm_password.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.confirm_password(class="form-control shadow-none", placeholder="Confirmer le mot de passe") }}
+						{% endif %}
+					</div>
+
+					<div class="d-grid">
+						{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>   
+{% endblock dashboard_content %}
