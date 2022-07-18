@@ -16,6 +16,8 @@ uni-slugify = "*"
 pillow = "*"
 bleach = {extras = ["css"], version = "*"}
 flask-ckeditor = "*"
+itsdangerous = "*"
+flask-mail = "*"
 
 [dev-packages]
 
