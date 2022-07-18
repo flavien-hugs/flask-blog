@@ -15,7 +15,7 @@
     				<div class="ms-xl-3  w-100 mt-3 mt-xl-0">
     					<div class="d-flex justify-content-between mb-5">
     						<div>
-    							<h1 class="mb-1 h2">{{ post.title }}</h1>
+    							<h1 class="mb-1 h2">{{ page_title.capitalize() }}</h1>
     							<span>Auteur {{ post.author.username }}</span>
     						</div>
     					</div>
@@ -30,7 +30,7 @@
 	    							<span class="me-2">
 	    								<div>
 	    									<i class="fe fe-clock text-muted"></i>
-	    									<span>Publié le {{ post.date_posted.strftime("%d %B %Y") }}</span>
+	    									<span>{{ moment(post.date_posted).fromNow() }}</span>
 	    								</div>
 	    							</span>
 	    						</div>
@@ -42,12 +42,14 @@
     			<hr class="my-4">
 
     			<div class="mt-6">
-		            <h2 class="mb-3 fs-3">{{ page_title }}</h2>
+		            <h2 class="mb-3 fs-3">{{ page_title.capitalize() }}</h2>
 		            <p>
-		            	{{ post.content }}
+		            	{{ post.content | safe }}
 		            </p>
           		</div>
     		</div>
     	</div>
     </main>
+
+    {% include "paths/_footer.html" %}
 {% endblock page_content %}

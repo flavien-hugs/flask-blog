@@ -37,7 +37,7 @@
                                 </div>
                             </a>
                         </td>
-                        <td class="align-middle border-top-0">{{ post.date_posted.strftime("%d %B %Y") }}</td>
+                        <td class="align-middle border-top-0">{{ moment(post.date_posted).fromNow(refresh=True) }}</td>
                         <td class="align-middle d-flex justify-content-around border-top-0">
                             <a href="{{ url_for('post.postUpdatePage', post_id=post.id) }}"
                                 class="text-muted btn btn-sm btn-primary me-2">
