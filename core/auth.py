@@ -41,7 +41,7 @@ def registerPage():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
-            user = User(gender=form.gender.data, email=form.email.data, username=form.username.data)
+            user = User(gender=form.gender.data, email=form.email.data.lower(), username=form.username.data)
             user.password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             db.session.add(user)
             db.session.commit()
@@ -77,7 +77,7 @@ def loginPage():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         try:
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
@@ -106,7 +106,7 @@ def send_reset_email(user):
     msg = Message(
         "Demande de réinitialisation de mot de passe",
         sender='noreply@blog.unsta.me',
-        recipients=[current_user.email]
+        recipients=[current_user.email.lower()]
     )
     msg.body = f'''Pour réinitialiser votre mot de passe, visitez le lien suivant:
     {url_for('auth.resetTokenPage', token=token, _external=True)}.
@@ -123,7 +123,7 @@ def resetRequestPage():
 
     form = ForgotPasswordForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         send_reset_email(user)
         flash(
             "Un courriel a été envoyé avec les instructions pour réinitialiser votre mot de passe.",
@@ -188,7 +188,7 @@ def updateAccountPage():
                 picture_file = save_profile_picture(form.picture.data)
                 current_user.image_file = picture_file
 
-            current_user.email = form.email.data
+            current_user.email = form.email.data.lower()
             current_user.website = form.website.data
             current_user.username = form.username.data
             current_user.biography = form.biography.data
