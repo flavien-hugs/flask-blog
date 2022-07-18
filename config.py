@@ -27,3 +27,11 @@ PHONE_NUMBER = "(225) 01 5157 1396"
 # https://flask-wtf.readthedocs.io/en/1.0.x/form/#secure-form
 
 WTF_CSRF_SECRET_KEY = environ.get('SECRET_KEY')
+
+# Configuration MAIL SERVER
+
+MAIL_POST = environ.get('MAIL_SERVER')
+MAIL_SERVER = environ.get('MAIL_SERVER')
+MAIL_USE_TLS = environ.get('MAIL_USE_TLS')
+MAIL_USERNAME = environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
