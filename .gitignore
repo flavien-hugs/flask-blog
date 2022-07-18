@@ -134,4 +134,5 @@ media/
 core.db
 .vscode/
 .flaskenv
+Pipfile.lock
 */migrations/*.py
