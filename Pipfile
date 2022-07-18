@@ -18,6 +18,7 @@ bleach = {extras = ["css"], version = "*"}
 flask-ckeditor = "*"
 itsdangerous = "*"
 flask-mail = "*"
+flask-migrate = "*"
 
 [dev-packages]
 
