@@ -20,8 +20,10 @@ main = Blueprint("main", __name__)
 @main.route("/index/", strict_slashes=False)
 @main.route("/accueil/", strict_slashes=False)
 def homePage():
-    posts = Post.query.order_by(Post.date_posted.desc())[:6]
-    return render_template('pages/index.html', posts=posts)
+    authors_count = User.query.count()
+    posts_count = Post.query.count()
+    posts = Post.query.order_by(Post.date_posted.desc()).limit(6)
+    return render_template('pages/index.html', posts=posts, posts_count=posts_count, authors_count=authors_count)
 
 
 @main.route("/blog/", strict_slashes=False)
@@ -67,7 +69,7 @@ def dashboardPage():
     page_title = "Mon compte"
     
     author = User.query.filter_by(username=current_user.username).first_or_404()
-    posts = author.posts.order_by(Post.date_posted.desc())
+    posts = author.posts.order_by(Post.date_posted.desc()).limit(6)
     posts_count = author.posts.count()
 
     return render_template(

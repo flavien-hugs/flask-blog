@@ -2,14 +2,15 @@
 
 import hashlib
 import logging as lg
+from time import time
 from datetime import datetime
 
 from flask import redirect, flash, url_for, request
 
+import jwt
 from slugify import slugify
 from flask_login import UserMixin
 from core import db, app, login_manager
-from itsdangerous.serializer import Serializer
 
 
 class User(db.Model, UserMixin):
@@ -81,18 +82,26 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User({self.username}', '{self.email}')"
 
-    def get_reset_token(self, expires_sec=3600):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+    def generate_reset_token(self):
+        return jwt.encode(
+            {
+                'exp': time() + app.config['RESET_TOKEN_MINUTES'] * 60,
+                'reset_email': self.email,
+            },
+            app.config['SECRET_KEY'],
+            algorithm='HS256'
+        )
 
     @staticmethod
     def verify_reset_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
+            data = jwt.decode(
+                token, app.config['SECRET_KEY'],
+                algorithms=['HS256']
+            )
+        except jwt.PyJWTError:
+            return
+        return User.query.get(email=data['reset_email'])
 
     def gravatar_hash(self):
         return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -109,6 +118,7 @@ class User(db.Model, UserMixin):
     def generate_user_slug(target, value, oldvalue, initiator):
         if value and (not target.slug or value != oldvalue):
             target.slug = slugify(value)
+
 
 
 class Post(db.Model):

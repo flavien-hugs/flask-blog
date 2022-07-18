@@ -190,11 +190,12 @@ class ForgotPasswordForm(FlaskForm):
     submit = SubmitField('Envoyer le lien de réinitialisation')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
+        email_data = email.data.lower()
+        user = User.query.filter_by(email=email_data).first()
+        if user is None:
             raise ValidationError(
                 f"""
-                Il n'y a pas de compte avec cet email '{email.data}'.
+                Il n'y a pas de compte avec cet email '{email_data}'.
                 Veuillez-vous inscrire.
                 """
             )

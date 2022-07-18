@@ -3,9 +3,13 @@ Routes for user authentication.
 """
 
 import os
+import uuid
 import secrets
 
-from flask import Blueprint, render_template, redirect, request, flash, url_for
+from flask import(
+    Blueprint, render_template, redirect, request,
+    flash, url_for
+)
 
 from core.models import User
 from core import db, bcrypt, login_manager, mail
@@ -102,11 +106,11 @@ def loginPage():
 
 
 def send_reset_email(user):
-    token = user.gravatar_hash()
+    token = user.generate_reset_token()
     msg = Message(
         "Demande de réinitialisation de mot de passe",
-        sender='noreply@blog.unsta.me',
-        recipients=[current_user.email.lower()]
+        sender='noreply@unsta.com',
+        recipients=[user.email.lower()]
     )
     msg.body = f'''Pour réinitialiser votre mot de passe, visitez le lien suivant:
     {url_for('auth.resetTokenPage', token=token, _external=True)}.
@@ -116,7 +120,7 @@ def send_reset_email(user):
     mail.send(msg)
 
 
-@auth.route("/reset/password/", methods=['GET', 'POST'], strict_slashes=False)
+@auth.route("/reset/password/", methods=['POST'], strict_slashes=False)
 def resetRequestPage():
     if current_user.is_authenticated:
         return redirect(url_for('main.homePage'))
@@ -141,7 +145,7 @@ def resetTokenPage(token):
         return redirect(url_for('main.homePage'))
 
     user = User.verify_reset_token(token)
-    if user is None:
+    if user is not None:
         flash("Ce jeton est invalide ou a expiré.", 'warning')
         return redirect(url_for('auth.resetRequestPage'))
 
