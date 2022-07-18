@@ -179,7 +179,7 @@ class PostForm(FlaskForm):
     submit = SubmitField("Publier l'article")
 
 
-class RequestPasswordResetForm(FlaskForm):
+class ForgotPasswordForm(FlaskForm):
     email = StringField(
         'Adresse Email',
         validators=[

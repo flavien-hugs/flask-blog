@@ -11,7 +11,7 @@ from core.models import User
 from core import db, bcrypt, login_manager, mail
 from core.forms import(
     RegistrationForm, LoginForm, UpdateAccountForm,
-    RequestPasswordResetForm, ResetPasswordForm
+    ForgotPasswordForm, ResetPasswordForm
 )
 from flask_mail import Message
 from PIL import Image
@@ -121,7 +121,7 @@ def resetRequestPage():
     if current_user.is_authenticated:
         return redirect(url_for('main.homePage'))
 
-    form = RequestPasswordResetForm()
+    form = ForgotPasswordForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
