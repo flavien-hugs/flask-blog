@@ -16,9 +16,10 @@ uni-slugify = "*"
 pillow = "*"
 bleach = {extras = ["css"], version = "*"}
 flask-ckeditor = "*"
-itsdangerous = "*"
 flask-mail = "*"
 flask-migrate = "*"
+pyjwt = "*"
+flask-moment = "*"
 
 [dev-packages]
 
