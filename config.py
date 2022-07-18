@@ -35,3 +35,6 @@ MAIL_SERVER = environ.get('MAIL_SERVER')
 MAIL_USE_TLS = environ.get('MAIL_USE_TLS')
 MAIL_USERNAME = environ.get('MAIL_USERNAME')
 MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
+
+
+RESET_TOKEN_MINUTES = environ.get('RESET_TOKEN_MINUTES')
