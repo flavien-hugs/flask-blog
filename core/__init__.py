@@ -11,10 +11,12 @@ from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 ckeditor = CKEditor(app)
 mail = Mail(app)
