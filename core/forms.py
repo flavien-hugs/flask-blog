@@ -177,3 +177,48 @@ class PostForm(FlaskForm):
         validators=[FileAllowed(['jpg', 'png'])]
     )
     submit = SubmitField("Publier l'article")
+
+
+class RequestPasswordResetForm(FlaskForm):
+    email = StringField(
+        'Adresse Email',
+        validators=[
+            DataRequired(),
+            Email(message='Entrer une adresse email valide.')
+        ]
+    )
+    submit = SubmitField('Envoyer le lien de réinitialisation')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError(
+                f"""
+                Il n'y a pas de compte avec cet email '{email.data}'.
+                Veuillez-vous inscrire.
+                """
+            )
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(
+        'Mot de passe',
+        validators=[
+            InputRequired(),
+            Length(
+                min=6, max=18,
+                message='Choisissez un mot de passe plus fort.'
+            )
+        ]
+    )
+    confirm_password = PasswordField(
+        'Confirmer le mot de passe',
+        validators=[
+            InputRequired(),
+            EqualTo(
+                'password',
+                message='Les deux mots de passe ne correspondent pas.'
+            ),
+        ]
+    )
+    submit = SubmitField('Modifier de mot de passe')
