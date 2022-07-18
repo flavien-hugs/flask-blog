@@ -2,46 +2,33 @@
 
 	{% set post_cover='media/post/' + post.post_cover %}
 
-	<article class="card card-bordered mb-3 card-hover cursor-pointer">
-		<div class="card-body">
-			<div>
-				<div class="d-xl-flex">
-					<div class="mb-3 mb-md-0">
-                    	<img width="56" height="56"
-                    		src="{{ url_for('static', filename=post_cover) }}"
-                    		alt="{{ post.slug }}" class="icon-shape border rounded-circle">
-                  	</div>
+	<article class="col-xl-4 col-lg-4 col-md-6 col-12">
+		<div class="card card-bordered mb-3 card-hover cursor-pointer rounded-0">
+			<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="card-img-top">
+				<img src="{{ url_for('static', filename=post_cover) }}"
+					class="card-img-top"
+					alt="{{ post.title.lower() }}">
+			</a>
 
-					<div class="ms-xl-3 w-100 mt-3 mt-xl-1">
-						<div class="d-flex justify-content-between mb-5">
-							<div>
-								<h3 class="mb-1 fs-4">
-									<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="text-inherit">
-										{{ post.title.capitalize() }}
-									</a>
-								</h3>
+			<div class="card-body">
+				<a href="#" class="fs-5 mb-2 fw-semi-bold d-block text-success">Courses</a>
+				
+				<h3>
+					<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="text-inherit">
+						{{ post.title.capitalize() }}
+					</a>
+				</h3>
 
-								<div>
-									<span>
-										Auteur
-										<b>{{ post.author.username }}</b>
-									</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="d-md-flex justify-content-between">
-							<div class="mb-2 mb-md-0">
-								<span class="me-2">
-									<i class="fe fe-message-circle text-muted"></i>
-									<span class="ms-1">(131 commentaires)</span>
-								</span>
-							</div>
-							<div>
-								<i class="fe fe-clock text-muted"></i>
-								<span>Publié le {{ post.date_posted.strftime("%d %B %Y") }}</span>
-							</div>
-						</div>
+				<div class="row align-items-center g-0 mt-4">
+					<div class="col-auto">
+						<img src="{{ current_user.gravatar(size=256) }}" alt="{{ post.author.username }}" class="rounded-circle avatar-sm me-2">
+					</div>
+					<div class="col lh-1">
+						<h5 class="mb-1">{{ post.author.username.upper() }}</h5>
+						<p class="fs-6 mb-0">{{ moment(post.author.date_joined).fromNow(refresh=True) }}</p>
+					</div>
+					<div class="col-auto">
+						<p class="fs-6 mb-0">{{ moment(post.date_posted).fromNow(refresh=True) }}</p>
 					</div>
 				</div>
 			</div>
