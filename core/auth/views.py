@@ -174,7 +174,7 @@ def save_profile_picture(picture):
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
     picture_path = os.path.join(
-        auth.root_path, 'static/media/user/', picture_fn)
+        auth.root_path, '../static/media/user/', picture_fn)
 
     output_size = (256, 256)
     thumb = Image.open(picture)
@@ -184,8 +184,8 @@ def save_profile_picture(picture):
     return picture_fn
 
 
-@auth.route('/account/me/update/account/', methods=['GET', 'POST'], strict_slashes=False)
-@auth.route('/account/dashboard/update/account/', methods=['GET', 'POST'], strict_slashes=False)
+@auth.route('/me/update/', methods=['GET', 'POST'], strict_slashes=False)
+@auth.route('/update/parameters/', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
 def updateAccountPage():
     form = UpdateAccountForm()
@@ -195,7 +195,6 @@ def updateAccountPage():
                 picture_file = save_profile_picture(form.picture.data)
                 current_user.image_file = picture_file
 
-            current_user.role = Role.query.get(form.role.data)
             current_user.email = form.email.data.lower()
             current_user.website = form.website.data
             current_user.username = form.username.data
@@ -208,7 +207,6 @@ def updateAccountPage():
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
         form.email.data = current_user.email
-        form.role.data = current_user.role_id
         form.website.data = current_user.website
         form.username.data = current_user.username
         form.biography.data = current_user.biography
