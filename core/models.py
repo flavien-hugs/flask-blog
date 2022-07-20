@@ -57,11 +57,11 @@ class Role(db.Model):
     def insert_roles():
         roles = {
             'User': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
-            'Moderator': [
+            'Moderateur': [
                 Permission.FOLLOW, Permission.COMMENT, Permission.WRITE,
                 Permission.MODERATE
             ],
-            'Administrator': [
+            'Administrateur': [
                 Permission.FOLLOW, Permission.COMMENT, Permission.WRITE,
                 Permission.MODERATE, Permission.ADMIN
             ]
@@ -140,7 +140,7 @@ class User(db.Model, UserMixin):
         super(User, self).__init__(**kwagrs)
         if self.role is None:
             if self.email == current_app.config['FLASKY_ADMIN']:
-                self.role = Role.query.filter_by(name='Administrator').first()
+                self.role = Role.query.filter_by(name='Administrateur').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
