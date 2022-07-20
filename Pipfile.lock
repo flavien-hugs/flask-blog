@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4e826c902579f1a674742621fd7b25162261428dcca504de816d75b72a4e0b84"
+            "sha256": "9cfd961682a0dfd1b95aed2b9a6b593d8cba08b463d4a5f5249917803a1663aa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -169,6 +169,14 @@
             "index": "pypi",
             "version": "==2.1.3"
         },
+        "flask-alchemydumps": {
+            "hashes": [
+                "sha256:1de0b7a83914e0e2d699738e48ceae142829c7fab5069ccfa4300ed2046ec37f",
+                "sha256:67aa07e9061ddcc1db6485196cc2d45d463f71736618b983a9be0b7bc3086b60"
+            ],
+            "index": "pypi",
+            "version": "==0.0.13"
+        },
         "flask-bcrypt": {
             "hashes": [
                 "sha256:062fd991dc9118d05ac0583675507b9fe4670e44416c97e0e6819d03d01f808a",
@@ -314,7 +322,7 @@
                 "sha256:637245b8bab2b6502fcbc752cc4b7a6f6243bb02b31c5c26156ad103d3d45670",
                 "sha256:7401a975809ea1fdc658c3aa4f78cc2195a0e019c5cbc4c06122884e9ae80c23"
             ],
-            "markers": "python_version < '3.10'",
+            "markers": "python_full_version < '3.10.0'",
             "version": "==4.12.0"
         },
         "importlib-resources": {
@@ -497,6 +505,13 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.8.2"
+        },
+        "python-decouple": {
+            "hashes": [
+                "sha256:2838cdf77a5cf127d7e8b339ce14c25bceb3af3e674e039d4901ba16359968c7",
+                "sha256:6cf502dc963a5c642ea5ead069847df3d916a6420cad5599185de6bab11d8c2e"
+            ],
+            "version": "==3.6"
         },
         "python-dotenv": {
             "hashes": [

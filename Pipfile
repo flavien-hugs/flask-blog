@@ -21,6 +21,7 @@ flask-migrate = "*"
 pyjwt = "*"
 flask-moment = "*"
 faker = "*"
+flask-alchemydumps = "*"
 
 [dev-packages]
 
