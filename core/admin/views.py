@@ -30,11 +30,11 @@ def save_profile_picture(picture):
     return picture_fn
 
 
-@admin.route('/dashboard/', methods=['GET', 'POST'], strict_slashes=False)
+@admin.route('/<int:id>/dashboard/', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
 @is_admin_required
-def editAdminDashboardPage():
-    form = EditProfileAdminForm()
+def editAdminDashboardPage(id):
+    form = EditProfileAdminForm(user=current_user.id)
     if form.validate_on_submit():
         try:
             if form.picture.data:
@@ -49,7 +49,7 @@ def editAdminDashboardPage():
             db.session.add(current_user._get_current_object())
             db.session.commit()
             flash("Votre compte a été mise à jour avec succès.", "success")
-            return redirect(url_for('auth.updateAccountPage'))
+            return redirect(url_for('admin.editAdminDashboardPage', id=current_user.id))
         except Exception as e:
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
