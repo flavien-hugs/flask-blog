@@ -3,7 +3,7 @@ Flask app configuration.
 Set Flask configuration from environment variables
 """
 
-from os import environ, path
+from os import urandom, environ, path
 from dotenv import load_dotenv
 
 BASE_DIR = path.abspath(path.dirname(__file__))
@@ -13,7 +13,7 @@ load_dotenv(path.join(BASE_DIR, ".flaskeenv"))
 
 class Config:
 
-    SECRET_KEY = environ.get('SECRET_KEY')
+    SECRET_KEY = environ.get('SECRET_KEY', urandom(24))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     EMAIL_ADDRESS = "support@unsta.net"
