@@ -11,7 +11,7 @@ install: venv ## Install or update dependencies
 	pipenv install
 
 freeze: ## Pin current dependencies
-	pipenv run pip freeze > requirements.txt
+	pipenv run pip freeze --local > requirements.txt
 
 test: ## Run the unit tests
 	FLASK_APP=run.py flask test
@@ -39,3 +39,15 @@ downgrade: ## Remove the last migration from the database
 
 shell: ## Flask Shell Load
 	FLASK_APP=run.py flask shell
+
+create-db-backup: ## create backup database
+	FLASK_APP=run.py flask alchemydumps create
+
+create-db-restore: ## restore backup database
+	FLASK_APP=run.py flask alchemydumps restore -d
+
+create-db-remove: ## remove backup database
+	FLASK_APP=run.py flask alchemydumps remove -d
+
+create-db-autoclean: ## autoclean backup database
+	FLASK_APP=run.py flask alchemydumps autoclean
