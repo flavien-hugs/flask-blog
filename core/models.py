@@ -37,7 +37,7 @@ class Role(db.Model):
             self.permissions = 0
 
     def __repr__(self):
-        return "<Role %r>'" % self.name
+        return f"Role(id={self.id!r}, name={self.name!r}, users={self.users!r})"
 
     def has_permission(self, perm):
         return self.permissions & perm == perm
@@ -148,7 +148,7 @@ class User(db.Model, UserMixin):
             self.image_file = self.gravatar_hash()
 
     def __repr__(self):
-        return "<User %r>'" % self.username
+        return f"User(id={self.id!r}, email={self.email!r}, username={self.username!r})"
 
 
     def can(self, perm):
@@ -249,7 +249,7 @@ class Post(db.Model):
     )
 
     def __repr__(self):
-        return "<Post %r>'" % self.title
+        return f"Post(id={self.id!r}, author={self.author!r}, title={title.title!r})"
 
     @staticmethod
     def generate_post_slug(target, value, oldvalue, initiator):
