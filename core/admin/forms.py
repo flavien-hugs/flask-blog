@@ -57,7 +57,7 @@ class EditProfileAdminForm(FlaskForm):
     submit = SubmitField("Mettre à jour mon compte")
 
     def __init__(self, user, *args, **kwargs):
-        super(self).__init__(*args, **kwargs)
+        super(EditProfileAdminForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
         self.user = user
 
