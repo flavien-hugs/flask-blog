@@ -84,6 +84,21 @@
 					</div>
 
 					<div class="mb-3 col-12 col-md-12">
+						{{ form.status.label(class="form-label") }}
+
+						{% if form.status.errors %}
+							{{ form.status(class="form-control shadow-none is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.status.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.status(class="form-control shadow-none", placeholder="Votre profession") }}
+						{% endif %}
+					</div>
+
+					<div class="mb-3 col-12 col-md-12">
 						{{ form.website.label(class="form-label") }}
 
 						{% if form.website.errors %}
