@@ -1,0 +1,140 @@
+{% extends "pages/index.html" %}
+
+{% block page_content %}
+    <main>
+        <div class="py-20" style="background:url({{ url_for('static', filename='img/background.jpg')}} ) no-repeat;
+        background-position: center;"></div>
+
+        <div class="card p-lg-2 pt-2 pt-lg-0 rounded-0 border-0">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-md-8 col-12">
+                        <div class="d-flex align-items-center">
+                            <div class="position-relative mt-n9">
+                                <img src="{{ user.gravatar(256) }}" alt="{{ user.slug }}" class="rounded-circle avatar-xxl border-white border border-4 position-relative">
+                            </div>
+                            <div class="ms-3">
+                                <div class="d-flex align-items-center">
+                                    <h3 class="mb-0 fw-bold me-2">{{ user.username.title() }}</h3>
+                                    <span class="badge bg-light-primary text-primary">
+                                        {{ user.email.lower() }}
+                                    </span>
+                                </div>
+                                <span class="fs-6">{{ user.status.capitalize() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-5 py-md-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-12">
+                        <div class="card border-0 mb-4">
+                            <div class="card-body">
+                                <h4>Qui suis-je ?</h4>
+                                <p>
+                                    {{ user.biography | safe }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 mb-4 mb-lg-0">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                                    <div>
+                                        <h4 class="mb-0 fw-bold">{{ user.posts.count() }}</h4>
+                                        <p class="fs-6 mb-0">Articles</p>
+                                    </div>
+                                    <div>
+                                        <span><i class="fe fe-file-text fs-3"></i></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                                    <div>
+                                        <h4 class="mb-0 fw-bold">{{ user.followers.count() }}</h4>
+                                        <p class="fs-6 mb-0">Abonnées</p>
+                                    </div>
+                                    <div>
+                                        <span><i class="fe fe-users fs-3"></i></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h4 class="mb-0 fw-bold">{{ user.comments.count() }}</h4>
+                                        <p class="fs-6 mb-0">Commentaires réçus</p>
+                                    </div>
+                                    <div>
+                                        <span><i class="fe fe-star fs-3"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 col-12">
+                        <div class="card border-0">
+                            <div class="card-header">
+                                <h4 class="mb-0">
+                                    Articles <span class="text-muted fs-6">({{ user.posts.count() }})</span>
+                                </h4>
+                            </div>
+
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for post in posts %}
+
+                                        {% set post_cover='media/post/' + post.post_cover %}
+
+                                        <li class="list-group-item px-0 pb-3 pt-0">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <a href="#">
+                                                    <div class="d-lg-flex align-items-center">
+                                                        <div>
+                                                            <img src="{{ url_for('static', filename=post_cover) }}"
+                                                            alt="{{ post.slug }}" class="rounded img-4by3-lg">
+                                                        </div>
+                                                        <div class="ms-lg-3 mt-2 mt-lg-0">
+                                                            <h4 class="text-primary-hover">
+                                                                {{ post.title.capitalize() }}
+                                                            </h4>
+                                                            <ul class="list-inline fs-6 mb-0 text-inherit">
+                                                                <li class="list-inline-item">
+                                                                    <i class="mdi mdi-clock-time-four-outline text-muted me-1"></i>
+                                                                    {{ moment(post.author.date_joined).fromNow(refresh=True) }}
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <i class="mdi mdi-star me-n1 text-warning"></i>
+                                                                    <i class="mdi mdi-star me-n1 text-warning"></i>
+                                                                    <i class="mdi mdi-star me-n1 text-warning"></i>
+                                                                    <i class="mdi mdi-star me-n1 text-warning"></i>
+                                                                    <i class="mdi mdi-star text-warning"></i>
+                                                                    <span class="text-warning">4.5</span>
+                                                                    <span class="text-muted">
+                                                                        ({{ post.comments.count() }})
+                                                                    </span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {% if pagination.total > 1 %}
+                            {% include "paths/_paginate.html" %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </main>
+
+    {% include "paths/_footer.html" %}
+{% endblock page_content %}

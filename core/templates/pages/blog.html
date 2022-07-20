@@ -2,47 +2,62 @@
 
 {% block page_content %}
     <main>
-        <section class="py-9">
+        {% if pagination.total == 0 %}
             <div class="container">
-                <div class="row">
-                    <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-12 mb-6">
-                        <div class="text-center mb-5">
-                            <h1 class=" display-2 fw-bold">Geeks Newsroom</h1>
-                            <p class=" lead">
-                                Nos articles, nos conseils et le fait que nous soyons nous-mêmes.
-                            </p>
-                        </div>
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div class="py-5">
+                            <img width="150" height="150" src="{{ url_for('static', filename='img/path-img.svg')}}" alt="post" class="img-fluid">
 
-                        <form class="row">
-                            <div class="mb-3 col ps-0 ms-2 ms-md-0">
-                                <input type="text" class="form-control shadow-none" placeholder="Rechercher un article" required="">
+                            <div class="mt-4 ">
+                                <h2 class="display-4 fw-bold">Le monde attends vos mots !</h2>
+
+                                <p class="mb-5">
+                                    Aucun article n'est encore publié
+                                </p>
                             </div>
-                            <div class="mb-3 col-auto ps-0">
-                                <button class="btn btn-primary" type="submit">Rechercher</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        {% else %}
+            <section class="py-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-12 mb-4">
+                            <div class="text-center mb-5">
+                                <h1 class=" display-2 fw-bold">Geeks Newsroom</h1>
+                                <p class=" lead">
+                                    Nos articles, nos conseils et le fait que nous soyons nous-mêmes.
+                                </p>
+                            </div>
 
-        <section class="pb-8">
-            <div class="container">
-                <div class="row">
-                    {% if pagination.total <= 0 %}
-                        <div class="text-center mb-4">
-                            <p class="lead">Aucun article disponible pour le moment.</p>
+                            <form class="row">
+                                <div class="mb-3 col ps-0 ms-2 ms-md-0">
+                                    <input type="text" class="form-control shadow-none" placeholder="Rechercher un article" required="">
+                                </div>
+                                <div class="mb-3 col-auto ps-0">
+                                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                                </div>
+                            </form>
                         </div>
+                    </div>
+                </div>
+            </section>
 
-                        {% else %}
-                            {% include "paths/_post.html" %}
+            <section class="pb-8">
+                <div class="container">
+                    <div class="row">
+                        {% include "paths/_post.html" %}
+                        {% if pagination.total > 1 %}
                             <div class="col-12 text-center mt-4">
                                 {% include "paths/_paginate.html" %}
                             </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        {% endif %}
     </main>
 
     {% include "paths/_footer.html" %}
