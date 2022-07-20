@@ -136,3 +136,4 @@ core.db
 .flaskenv
 Pipfile.lock
 */migrations/*.py
+data-dev.sqlite

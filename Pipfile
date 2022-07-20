@@ -20,6 +20,7 @@ flask-mail = "*"
 flask-migrate = "*"
 pyjwt = "*"
 flask-moment = "*"
+faker = "*"
 
 [dev-packages]
 
