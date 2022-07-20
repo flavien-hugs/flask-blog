@@ -24,7 +24,7 @@ def save_post_picture(picture):
     _, extension = os.path.splitext(picture.filename)
     picture_fn = random_hex + extension
     picture_path = os.path.join(
-        post.root_path, 'static/media/post/', picture_fn)
+        post.root_path, '../static/media/post/', picture_fn)
 
     output_size = (923, 498)
     thumb = Image.open(picture)
