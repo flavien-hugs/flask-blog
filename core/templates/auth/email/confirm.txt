@@ -1,0 +1,8 @@
+Hello {{ user.username }},
+
+Pour réinitialiser votre mot de passe, visitez le lien suivant:
+{url_for('auth.resetTokenPage', token=token, _external=True)}.
+
+L'équipe Unsta Inc
+
+Notes: Si vous n'avez pas fait cette demande, ignorez simplement cet e-mail et aucun changement ne sera effectué.

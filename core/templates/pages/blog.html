@@ -1,45 +1,48 @@
 {% extends "pages/index.html" %}
 
 {% block page_content %}
-    <main class="py-8">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-12 mb-6">
-                    <div class="text-center mb-5">
-                        <h1 class=" display-2 fw-bold">Geeks Newsroom</h1>
-                        <p class=" lead">
-                            Nos articles, nos conseils et le fait que nous soyons nous-mêmes.
-                        </p>
+    <main>
+        <section class="py-9">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-12 mb-6">
+                        <div class="text-center mb-5">
+                            <h1 class=" display-2 fw-bold">Geeks Newsroom</h1>
+                            <p class=" lead">
+                                Nos articles, nos conseils et le fait que nous soyons nous-mêmes.
+                            </p>
+                        </div>
+
+                        <form class="row">
+                            <div class="mb-3 col ps-0 ms-2 ms-md-0">
+                                <input type="text" class="form-control shadow-none" placeholder="Rechercher un article" required="">
+                            </div>
+                            <div class="mb-3 col-auto ps-0">
+                                <button class="btn btn-primary" type="submit">Rechercher</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <form class="row">
-                        <div class="mb-3 col ps-0 ms-2 ms-md-0">
-                            <input type="text" class="form-control shadow-none" placeholder="Rechercher un article" required="">
-                        </div>
-                        <div class="mb-3 col-auto ps-0">
-                            <button class="btn btn-primary" type="submit">Rechercher</button>
-                        </div>
-                    </form>
                 </div>
+            </div>
+        </section>
 
-                <div class="mb-6 mb-md-0">
-
+        <section class="pb-8">
+            <div class="container">
+                <div class="row">
                     {% if pagination.total <= 0 %}
-
                         <div class="text-center mb-4">
                             <p class="lead">Aucun article disponible pour le moment.</p>
                         </div>
 
-                    {% else %}
-                        {% include "paths/_post.html" %}
-
-                        <div class="col-12 text-center mt-4">
-                            {% include "paths/_paginate.html" %}
-                        </div>
+                        {% else %}
+                            {% include "paths/_post.html" %}
+                            <div class="col-12 text-center mt-4">
+                                {% include "paths/_paginate.html" %}
+                            </div>
                     {% endif %}
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     {% include "paths/_footer.html" %}

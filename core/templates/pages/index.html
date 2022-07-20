@@ -48,7 +48,7 @@
             <div class="container">
                 <div class="row">
                     <div class="offset-xl-2 col-xl-9 col-md-12 col-12">
-                        <div class=" text-center mb-8">
+                        <div class="text-center mb-8">
                             <span class="text-uppercase text-primary fw-semi-bold ls-md">
                                 Nos derniers articles publiés
                             </span>
@@ -56,14 +56,14 @@
                                 Découvrez nos articles pour booster votre carrière.
                             </h2>
                         </div>
+                    </div>
+                    
+                    {% include "paths/_post.html" %}
 
-                        {% include "paths/_post.html" %}
-
-                        <div class="mt-6 text-center">
-                            <a href="{{ url_for('main.blogListPage') }}" class="btn btn-outline-primary text-uppercase">
-                                afficher tous les artilcles
-                            </a>
-                        </div>
+                    <div class="mt-6 text-center">
+                        <a href="{{ url_for('main.blogListPage') }}" class="btn btn-outline-primary text-uppercase">
+                            afficher tous les artilcles
+                        </a>
                     </div>
                 </div>
             </div>
