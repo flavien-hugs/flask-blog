@@ -7,43 +7,51 @@ import logging as lg
 from flask import Flask
 
 from flask_mail import Mail
+from flask_moment import Moment
 from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_moment import Moment
-from flask_migrate import Migrate
 
-app = Flask(__name__)
-app.config.from_object('config')
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-bcrypt = Bcrypt(app)
-ckeditor = CKEditor(app)
-moment = Moment(app)
-mail = Mail(app)
+from config import config
 
 
-login_manager = LoginManager(app)
+mail = Mail()
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+moment = Moment()
+ckeditor = CKEditor()
+login_manager = LoginManager()
 login_manager.login_view = 'auth.loginPage'
 login_manager.session_protection = "strong"
 login_manager.login_message_category = 'info'
 
 
-from core import models
-from .auth import auth as auth_blueprint
-from .main import main as main_blueprint
-from .post import post as post_blueprint
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
-db.init_app(app)
+    mail.init_app(app)
+    bcrypt.init_app(app)
+    moment.init_app(app)
+    ckeditor.init_app(app)
+    login_manager.init_app(app)
 
-# blueprint for auth routes in our app
+    db.init_app(app)
 
-app.register_blueprint(auth_blueprint)
-app.register_blueprint(main_blueprint)
-app.register_blueprint(post_blueprint)
+    # blueprint routes in our app
 
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
-@app.cli.command('init_db')
-def init_db():
-    models.init_database()
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/account/')
+
+    from .blog import post as post_blueprint
+    app.register_blueprint(post_blueprint,  url_prefix='/account/dashboard/')
+
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix='/admin/')
+
+    return app
