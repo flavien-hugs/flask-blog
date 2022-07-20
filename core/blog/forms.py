@@ -19,3 +19,11 @@ class PostForm(FlaskForm):
         validators=[FileAllowed(['jpg', 'png'])]
     )
     submit = SubmitField("Publier l'article")
+
+
+class CommentForm(FlaskForm):
+    content = CKEditorField(
+        "Qu'en pensez-vous sur ce sujet ?",
+        validators=[DataRequired()]
+    )
+    submit = SubmitField('Soumettre votre avis')
