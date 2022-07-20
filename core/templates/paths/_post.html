@@ -24,7 +24,11 @@
 						<img src="{{ current_user.gravatar(size=256) }}" alt="{{ post.author.username }}" class="rounded-circle avatar-sm me-2">
 					</div>
 					<div class="col lh-1">
-						<h5 class="mb-1">{{ post.author.username.upper() }}</h5>
+						<h5 class="mb-1">
+							<a href="{{ url_for('main.userProfilePage', slug=post.author.slug) }}">
+								{{ post.author.username.upper() }}
+							</a>
+						</h5>
 						<p class="fs-6 mb-0">{{ moment(post.author.date_joined).fromNow(refresh=True) }}</p>
 					</div>
 					<div class="col-auto">
