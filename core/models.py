@@ -79,6 +79,35 @@ class Role(db.Model):
         db.session.commit()
 
 
+class Follow(db.Model):
+    """Follow User model"""
+
+    __tablename__ = 'follows'
+    follower_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    followed_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __repr__(self):
+        return f"Follow(id={self.id!r}, follower_id={self.follower_id!r}, followed_id={self.followed_id!r})"
+
+
+class Comment(db.Model):
+    """Comment Post model"""
+
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    disabled = db.Column(db.Boolean)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def __repr__(self):
+        return f"Comment(id={self.id!r}, post={self.post!r}, author={self.author!r})"
+
+
 class User(db.Model, UserMixin):
 
     """
@@ -97,8 +126,11 @@ class User(db.Model, UserMixin):
         nullable=False
     )
     username = db.Column(
-        db.String(100), nullable=False,
+        db.String(80), nullable=False,
         unique=True
+    )
+    status = db.Column(
+        db.String(100), nullable=True,
     )
     slug = db.Column(
         db.String(100), nullable=False,
@@ -135,6 +167,27 @@ class User(db.Model, UserMixin):
         backref='author',
         lazy='dynamic'
     )
+    comments = db.relationship(
+        'Comment',
+        backref='author',
+        lazy='dynamic'
+    )
+    followed = db.relationship(
+        'Follow',
+        lazy='dynamic',
+        overlaps="followed,follower",
+        foreign_keys=[Follow.follower_id],
+        backref=db.backref('follower', lazy='joined'),
+        cascade='all, delete-orphan'
+    )
+    followers = db.relationship(
+        'Follow',
+        lazy='dynamic',
+        overlaps="followed,follower",
+        foreign_keys=[Follow.followed_id],
+        backref=db.backref('followed', lazy='joined'),
+        cascade='all, delete-orphan'
+    )
 
     def __init__(self, **kwagrs):
         super(User, self).__init__(**kwagrs)
@@ -146,6 +199,8 @@ class User(db.Model, UserMixin):
 
         if self.email is not None and self.image_file is None:
             self.image_file = self.gravatar_hash()
+
+        self.follow(self)
 
     def __repr__(self):
         return f"User(id={self.id!r}, email={self.email!r}, username={self.username!r})"
@@ -194,6 +249,39 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.password, password)
 
+    def is_following(self, user):
+        if user.id is None:
+            return False
+        return self.followed.filter_by(followed_id=user.id).first() is None
+
+    def is_followed_by(self, user):
+        if user.id is None:
+            return False
+        return self.followers.filter_by(followed_id=user.id).first() is None
+
+    def follow(self, user):
+        if not self.is_following(user):
+            f = Follow(follower=self, followed=user)
+            db.session.add(f)
+
+    def unfollow(self, user):
+        f = self.followed.filter_by(followed_id=user.id).first()
+        if f:
+            db.session.delete(f)
+
+    @property
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id==Post.author_id)\
+            .filter_by(Follow.follower_id==self.id)
+
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
+
 
 class AnonymousUser(AnonymousUserMixin):
 
@@ -208,9 +296,7 @@ login_manager.anonymous_user = AnonymousUser
 
 
 class Post(db.Model):
-    """
-    User Post model
-    """
+    """User Post model"""
 
     __tablename__ = 'posts'
 
@@ -247,9 +333,14 @@ class Post(db.Model):
         index=True,
         unique=True
     )
+    comments = db.relationship(
+        'Comment',
+        backref='post',
+        lazy='dynamic'
+    )
 
     def __repr__(self):
-        return f"Post(id={self.id!r}, author={self.author!r}, title={title.title!r})"
+        return f"Post(id={self.id!r}, author={self.author!r}, title={self.title!r})"
 
     @staticmethod
     def generate_post_slug(target, value, oldvalue, initiator):
