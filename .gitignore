@@ -137,3 +137,5 @@ core.db
 Pipfile.lock
 */migrations/*.py
 data-dev.sqlite
+alchemydumps-backup/
+alchemydumps-backup/*.gz
