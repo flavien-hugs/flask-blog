@@ -13,6 +13,9 @@ install: venv ## Install or update dependencies
 freeze: ## Pin current dependencies
 	pipenv run pip freeze > requirements.txt
 
+test: ## Run the unit tests
+	FLASK_APP=run.py flask test
+
 createdb: ## Create database
 	FLASK_APP=run.py flask init_db
 
@@ -23,10 +26,16 @@ stamp: ## Set the revision in the database to the head, without performing any m
 	FLASK_APP=run.py flask db stamp head
 
 revision: ## Revision database
-	FLASK_APP=run.py flask db revision --rev-id 5e535439b647
+	FLASK_APP=run.py flask db revision --rev-id 15dcb6d541ef
 
 migrate: ## Generate an initial migration
 	FLASK_APP=run.py flask db migrate -m 'Intial Migration'
 
 upgrade: ## Apply the migration to the database
 	FLASK_APP=run.py flask db migrate -m 'Upgrade Migration'
+
+downgrade: ## Remove the last migration from the database
+	FLASK_APP=run.py flask db downgrade
+
+shell: ## Flask Shell Load
+	FLASK_APP=run.py flask shell
