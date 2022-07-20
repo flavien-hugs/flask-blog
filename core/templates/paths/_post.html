@@ -1,11 +1,11 @@
 {% for post in posts %}
 
-	
+	{% set post_cover='media/post/' + post.post_cover %}
 
 	<article class="col-xl-4 col-lg-4 col-md-6 col-12">
 		<div class="card card-bordered mb-3 card-hover cursor-pointer rounded-0">
 			<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="card-img-top">
-				<img src=""
+				<img src="{{ url_for('static', filename=post_cover) }}"
 					class="card-img-top" width="356" height="192"
 					alt="{{ post.title.lower() }}">
 			</a>
