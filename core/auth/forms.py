@@ -34,7 +34,7 @@ class RegistrationForm(FlaskForm):
         'Nom & prénoms',
         validators=[
             DataRequired(),
-            Length(min=2, max=50)
+            Length(min=2, max=80)
         ]
     )
     email = StringField(
@@ -118,6 +118,10 @@ class UpdateAccountForm(FlaskForm):
             DataRequired(),
             Length(min=2, max=50)
         ]
+    )
+    status = StringField(
+        'Profession',
+        validators=[Length(min=2, max=100)]
     )
     email = StringField(
         'Adresse Email',
