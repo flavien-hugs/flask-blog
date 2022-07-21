@@ -1,4 +1,4 @@
-# core.forms.py
+# auth.forms.py
 
 from flask_login import current_user
 
