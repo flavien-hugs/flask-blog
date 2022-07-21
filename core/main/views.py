@@ -2,11 +2,17 @@
 Main page routes.
 """
 
-from flask import render_template, url_for, redirect, request, make_response
+from datetime import datetime
+
+from flask import(
+    g, render_template, url_for, redirect,
+    request, make_response
+)
 
 from flask_login import login_required, current_user
 
 from . import main
+from .forms import SearchForm
 from ..blog.forms import CommentForm
 from ..decorators import permission_required
 from ..models import db, Permission, User, Post, Comment
@@ -148,11 +154,44 @@ def followersPage(slug):
 
     render_template(
         'pages/followers.html',
-        user=user, page_title="Les abonnés",
-        endpoint='.followers',
+        user=user,
+        follows=follows,
         pagination=pagination,
-        follows=follows
+         page_title="Les abonnés",
     )
+
+
+@main.before_app_request
+def beforeRequest():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+        g.search_form = SearchForm()
+
+
+@main.context_processor
+def mainContextProcessor():
+    form = SearchForm()
+    return dict(form=form)
+
+
+@main.route('/search/', strict_slashes=False)
+def searchPostPage():
+
+    query = g.search_form.query.data
+    page = request.args.get('page', 1, type=int)
+    posts, total = Post.search(query, page, 8)
+    next_url = url_for('main.searchPostPage', query=query, page=page + 1) if total > page * 8 else None
+    prev_url = url_for('main.searchPostPage', query=query, page=page - 1) if total > 1 else None
+
+    return render_template(
+        'pages/search.html',
+        page_title='Recherche',
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url
+    )
+
 
 
 @main.route('/all')
