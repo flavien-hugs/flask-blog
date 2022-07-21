@@ -14,6 +14,13 @@ from .search import SearchableMixin
 from flask_login import UserMixin, AnonymousUserMixin
 
 
+followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('users.id'))
+)
+
+
 class Permission:
     FOLLOW = 1
     COMMENT = 2
@@ -78,20 +85,6 @@ class Role(db.Model):
             role.default = (role.name == default_role)
             db.session.add(role)
         db.session.commit()
-
-
-class Follow(db.Model):
-    """Follow User model"""
-
-    __tablename__ = 'follows'
-    follower_id = db.Column(
-        db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    followed_id = db.Column(
-        db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
-
-    def __repr__(self):
-        return f"Follow(id={self.id!r}, follower_id={self.follower_id!r}, followed_id={self.followed_id!r})"
 
 
 class Comment(db.Model):
@@ -174,20 +167,11 @@ class User(db.Model, UserMixin):
         lazy='dynamic'
     )
     followed = db.relationship(
-        'Follow',
-        lazy='dynamic',
-        overlaps="followed,follower",
-        foreign_keys=[Follow.follower_id],
-        backref=db.backref('follower', lazy='joined'),
-        cascade='all, delete-orphan'
-    )
-    followers = db.relationship(
-        'Follow',
-        lazy='dynamic',
-        overlaps="followed,follower",
-        foreign_keys=[Follow.followed_id],
-        backref=db.backref('followed', lazy='joined'),
-        cascade='all, delete-orphan'
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id==id),
+        secondaryjoin=(followers.c.followed_id==id),
+        backref=db.backref('followers', lazy='dynamic'),
+        lazy='dynamic'
     )
 
     def __init__(self, **kwagrs):
@@ -253,27 +237,29 @@ class User(db.Model, UserMixin):
     def is_following(self, user):
         if user.id is None:
             return False
-        return self.followed.filter_by(followed_id=user.id).first() is None
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
 
     def is_followed_by(self, user):
         if user.id is None:
             return False
-        return self.followers.filter_by(followed_id=user.id).first() is None
+        return self.followers.filter_by(
+            followers.c.followed_id == user.id).first() is None
 
     def follow(self, user):
         if not self.is_following(user):
-            f = Follow(follower=self, followed=user)
-            db.session.add(f)
+            self.followed.append(user)
 
     def unfollow(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
-        if f:
-            db.session.delete(f)
+        if self.is_following(user):
+            self.followed.remove(user)
 
-    @property
     def followed_posts(self):
-        return Post.query.join(Follow, Follow.followed_id==Post.author_id)\
-            .filter_by(Follow.follower_id==self.id)
+        followed = Post.query.join(
+            followers, (followers.c.followed_id==Post.user_id)).filter(
+                followers.c.follower_id==self.id)
+        own = Post.query.filter_by(user_id=self.id)
+        return followed.union(own).order_by(Post.date_posted.desc())
 
     @staticmethod
     def add_self_follows():
@@ -282,6 +268,7 @@ class User(db.Model, UserMixin):
                 user.follow(user)
                 db.session.add(user)
                 db.session.commit()
+
 
 
 class AnonymousUser(AnonymousUserMixin):
