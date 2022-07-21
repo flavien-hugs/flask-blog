@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from slugify import slugify
 from . import db, login_manager
+from .search import SearchableMixin
 from flask_login import UserMixin, AnonymousUserMixin
 
 
@@ -295,10 +296,11 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
-class Post(db.Model):
+class Post(SearchableMixin, db.Model):
     """User Post model"""
 
     __tablename__ = 'posts'
+    __searchable__ = ['title', 'content']
 
     id = db.Column(
         db.Integer,
