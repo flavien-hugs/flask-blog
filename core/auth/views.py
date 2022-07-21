@@ -197,6 +197,7 @@ def updateAccountPage():
 
             current_user.email = form.email.data.lower()
             current_user.website = form.website.data
+            current_user.status = form.status.data
             current_user.username = form.username.data
             current_user.biography = form.biography.data
             db.session.add(current_user._get_current_object())
@@ -207,6 +208,7 @@ def updateAccountPage():
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
         form.email.data = current_user.email
+        form.status.data = current_user.status
         form.website.data = current_user.website
         form.username.data = current_user.username
         form.biography.data = current_user.biography
