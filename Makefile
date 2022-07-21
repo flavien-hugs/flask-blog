@@ -29,7 +29,7 @@ stamp: ## Set the revision in the database to the head, without performing any m
 	$(MANAGE) flask db stamp head
 
 revision: ## Revision database
-	$(MANAGE) flask db revision --rev-id 1f74fb4202e2
+	$(MANAGE) flask db revision --rev-id 38c225b2fe44
 
 migrate: ## Generate an initial migration
 	$(MANAGE) flask db migrate -m 'Intial Migration'
@@ -47,10 +47,10 @@ create-db-backup: ## create backup database
 	$(MANAGE) flask alchemydumps create
 
 create-db-restore: ## restore backup database
-	$(MANAGE) flask alchemydumps restore -d
+	$(MANAGE) flask alchemydumps restore
 
 create-db-remove: ## remove backup database
-	$(MANAGE) flask alchemydumps remove -d
+	$(MANAGE) flask alchemydumps remove
 
 create-db-autoclean: ## autoclean backup database
 	$(MANAGE) flask alchemydumps autoclean
