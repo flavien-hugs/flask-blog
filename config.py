@@ -28,6 +28,7 @@ class Config:
     MAIL_SENDER = 'Unsta Admin <noreply@unsta.com>'
     MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
     RESET_TOKEN_MINUTES = environ.get('RESET_TOKEN_MINUTES')
+    ELASTICSEARCH_URL = environ.get('ELASTICSEARCH_URL')
 
     @staticmethod
     def init_app(app):
