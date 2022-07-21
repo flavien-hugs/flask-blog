@@ -22,6 +22,7 @@ pyjwt = "*"
 flask-moment = "*"
 faker = "*"
 flask-alchemydumps = "*"
+elasticsearch = {extras = ["async"], version = "*"}
 
 [dev-packages]
 
