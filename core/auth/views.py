@@ -43,7 +43,8 @@ def registerPage():
     if form.validate_on_submit():
         try:
             user = User(gender=form.gender.data,
-                        email=form.email.data.lower(), username=form.username.data)
+                        email=form.email.data.lower(),
+                        username=form.username.data)
             user.password = bcrypt.generate_password_hash(
                 form.password.data).decode('utf-8')
             db.session.add(user)
@@ -53,6 +54,7 @@ def registerPage():
                 votre compte a été créé ! Connectez-vous maintenant !
             """
             flash(msg_success, "success")
+
             return redirect(url_for('auth.loginPage'))
         except Exception as e:
             return f"Une erreur s'est produite: {e}"
@@ -208,7 +210,7 @@ def updateAccountPage():
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
         form.email.data = current_user.email
-        form.status.data = current_user.status
+        form.status.data = current_user.data
         form.website.data = current_user.website
         form.username.data = current_user.username
         form.biography.data = current_user.biography
