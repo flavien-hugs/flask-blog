@@ -26,18 +26,23 @@
                     <div class="row">
                         <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-12 mb-4">
                             <div class="text-center mb-5">
-                                <h1 class=" display-2 fw-bold">Geeks Newsroom</h1>
+                                <h1 class="display-2 fw-bold">
+                                    Vos soucis s'arrêtent ici 
+                                </h1>
                                 <p class=" lead">
                                     Nos articles, nos conseils et le fait que nous soyons nous-mêmes.
                                 </p>
                             </div>
 
-                            <form class="row">
+                            <form method="GET" action="{{ url_for('main.searchPostPage') }}" class="row">
+
+                                {{ g.search_form.hidden_tag() }}
+
                                 <div class="mb-3 col ps-0 ms-2 ms-md-0">
-                                    <input type="text" class="form-control shadow-none" placeholder="Rechercher un article" required="">
+                                    {{ g.search_form.query(class='form-control shadow-none', placeholder=g.search_form.query.label.text, type='search')}}
                                 </div>
                                 <div class="mb-3 col-auto ps-0">
-                                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                                    <button class="btn btn-primary text-uppercase fw-bold" type="submit">Rechercher</button>
                                 </div>
                             </form>
                         </div>
