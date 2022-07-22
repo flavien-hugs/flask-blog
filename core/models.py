@@ -269,6 +269,23 @@ class User(db.Model, UserMixin):
                 db.session.add(user)
                 db.session.commit()
 
+    def get_reset_password_token(self, expires_in=600):
+        from . import auth
+        return jwt.encode(
+            {'auth.resetPasswordPage': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        from . import auth
+        try:
+            id = jwt.decode(
+                token, current_app.config['SECRET_KEY'],
+                algorithms=['HS256'])['auth.resetPasswordPage']
+        except:
+            return
+        return User.query.get(id)
+
 
 
 class AnonymousUser(AnonymousUserMixin):
