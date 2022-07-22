@@ -305,8 +305,13 @@ def sitemap():
 
 @main.route('/robots.txt/', strict_slashes=False)
 def noindex():
+    Disallow = lambda string: f'Disallow: {string}'
     r = Response(
-            response="User-Agent: *\nDisallow: admin/\nDisallow: account/\n",
+        "User-Agent: *\n{0}\n".format("\n".join(
+            [
+                Disallow('/admin/'),
+                Disallow('/account/')
+            ])),
             status=200, mimetype="text/plain"
         )
     r.headers["Content-Type"] = "text/plain; charset=utf-8"
