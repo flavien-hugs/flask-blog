@@ -23,6 +23,8 @@ flask-moment = "*"
 faker = "*"
 flask-alchemydumps = "*"
 elasticsearch = {extras = ["async"], version = "*"}
+flask-session = "*"
+redis = "*"
 
 [dev-packages]
 
