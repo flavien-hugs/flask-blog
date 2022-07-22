@@ -1,52 +1,71 @@
-{% extends "auth/dashboard.html" %}
+{% extends '_base.html' %}
 
-{% block dashboard_content %}
-	<div class="card">
-		<div class="card-header">
-			<h3 class="mb-0">{{ page_title.capitalize() }}</h3>
-		</div>
+{% block navbar %}
 
-		<div class="card-body">
-			<div>
-				<form method="POST" action="." class="row">
+{% endblock navbar %}
 
-					{{ form.hidden_tag() }}
+{% block page_content %}
+	<div class="container d-flex flex-column">
+		<div class="row align-items-center justify-content-center g-0 min-vh-100">
+			<div class="col-lg-5 col-md-8 py-8 py-xl-0">
+				
+				{% include "paths/_alert.html" %}
 
-					<div class="mb-3 col-12 col-md-3">
-						{{ form.password.label(class="form-label") }}
+				<div class="card shadow">
+					<div class="card-body p-6">
+						<div class="mb-4">
+							<a href="{{ url_for('main.homePage') }}">
+								<img src="{{ url_for('static', filename='img/logo.svg') }}" class="mb-4" alt="login">
+							</a>
 
-						{% if form.password.errors %}
-							{{ form.password(class="form-control shadow-none is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.password.errors %}
-								<span>{{ error }}</span>
-								{% endfor %}
+							<h1 class="mb-1 fw-bold">{{ page_title }}</h1>
+							<span>
+								Vous n'avez pas de compte ?
+								<a href="{{ url_for('auth.registerPage') }}" class="ms-1">Inscrivez-vous</a>
+							</span>
+						</div>
+
+						<form action="" method="POST">
+							
+							{{ form.hidden_tag() }}
+
+							<div class="mb-3 col-12 col-md-12">
+								{{ form.password.label(class="form-label") }}
+
+								{% if form.password.errors %}
+									{{ form.password(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.password.errors %}
+										<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.password(class="form-control shadow-none", placeholder="Entrer le nouveau mot de passe") }}
+								{% endif %}
 							</div>
-						{% else %}
-							{{ form.password(class="form-control shadow-none", placeholder="Entrer le nouveau mot de passe") }}
-						{% endif %}
-					</div>
 
-					<div class="mb-3 col-12 col-md-9">
-						{{ form.confirm_password.label(class="form-label") }}
+							<div class="mb-3 col-12 col-md-12">
+								{{ form.confirm_password.label(class="form-label") }}
 
-						{% if form.confirm_password.errors %}
-							{{ form.confirm_password(class="form-control shadow-none is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.confirm_password.errors %}
-								<span>{{ error }}</span>
-								{% endfor %}
+								{% if form.confirm_password.errors %}
+									{{ form.confirm_password(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.confirm_password.errors %}
+										<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.confirm_password(class="form-control shadow-none", placeholder="Confirmer le mot de passe") }}
+								{% endif %}
 							</div>
-						{% else %}
-							{{ form.confirm_password(class="form-control shadow-none", placeholder="Confirmer le mot de passe") }}
-						{% endif %}
-					</div>
 
-					<div class="d-grid">
-						{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
+							<div class="d-grid">
+								{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
+							</div>
+						</form>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
-	</div>   
-{% endblock dashboard_content %}
+	</div>
+{% endblock page_content %}
