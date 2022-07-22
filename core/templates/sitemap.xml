@@ -7,14 +7,18 @@
 
     {% for url in static_urls %}
         <url>
-            <loc>{{ url["loc"] }}</loc>
+            <loc>{{ url.loc }}</loc>
+            <changefreq>{{ url.changefreq }}</changefreq>
+            <priority>{{ url.priority }}</priority>
         </url>
     {% endfor %}
 
     {% for url in dynamic_urls %}
         <url>
-            <loc>{{ url["loc"] }}</loc>
-            <lastmod>{{ url["lastmod"] }}</lastmod>
+            <loc>{{ url.loc }}</loc>
+            <lastmod>{{ url.lastmod }}</lastmod>
+            <changefreq>{{ url.changefreq }}</changefreq>
+            <priority>{{ url.priority }}</priority>
         </url>
     {% endfor %}
 </urlset>

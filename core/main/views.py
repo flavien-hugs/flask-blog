@@ -275,7 +275,9 @@ def sitemap():
         ):
             if "GET" in rule.methods and len(rule.arguments) == 0:
                 url = {
-                    "loc": f"{host_base}{str(rule)}"
+                    "loc": f"{host_base}{str(rule)}",
+                    "changefreq": "weekly",
+                    "priority": "0.9"
                 }
                 static_urls.append(url)
 
@@ -285,7 +287,9 @@ def sitemap():
     for post in blog_posts:
         url = {
             "loc": f"{host_base}/article/{post.slug}",
-            "lastmod": post.date_posted.strftime("%Y-%m-%d")
+            "lastmod": post.date_posted.strftime("%Y-%m-%d"),
+            "changefreq": "weekly",
+            "priority": "0.7"
         }
         dynamic_urls.append(url)
 
