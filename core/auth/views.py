@@ -106,25 +106,31 @@ def loginPage():
     )
 
 
-def send_async_email(app, message):
-    with app.app_context():
-        mail.send(message)
+def send_async_email(message):
+    mail.send(message)
 
 
-def send_reset_email(to, subject, template, **kwargs):
-    token = user.generate_reset_token()
-    msg = Message(
-        current_app.config['MAIL_SUBJECT_PREFIX'] + subject,
-        sender=current_app.config['MAIL_SENDER'], recipients=[to]
-    )
-    msg.body = render_template(template + '.txt', **kwargs)
-    msg.html = render_template(template + '.html', **kwargs)
-    thr = Thread(target=send_async_email, args=[app, msg])
-    thr.start()
+def send_email(subject, sender, recipients, text_body, html_body):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    thr = Thread(target=send_async_email, args=(current_app, msg)).start()
     return thr
 
+def send_password_reset_email(user):
+    token = user.get_reset_password_token()
+    send_email(
+        '[Unsta Inc] Réinitialisationd de mot de passe',
+        sender=current_app.config['MAIL_SENDER'],
+        recipients=[user.email],
+        text_body=render_template(
+            'auth/email/reset_password.txt', user=user, token=token),
+        html_body=render_template(
+            'auth/email/reset_password.html', user=user, token=token)
+    )
 
-@auth.route("/reset/password/", methods=['POST'], strict_slashes=False)
+
+@auth.route("/reset/password/request/", methods=['GET', 'POST'], strict_slashes=False)
 def resetRequestPage():
     if current_user.is_authenticated:
         return redirect(url_for('main.homePage'))
@@ -132,7 +138,8 @@ def resetRequestPage():
     form = ForgotPasswordForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
-        # send_reset_email(user)
+        if user:
+            send_password_reset_email(user)
         flash(
             "Un courriel a été envoyé avec les instructions pour réinitialiser votre mot de passe.",
             'info'
@@ -143,24 +150,25 @@ def resetRequestPage():
     return render_template('auth/resetpwd.html', page_title=page_title, form=form)
 
 
-@auth.route("/reset/password/", methods=['GET', 'POST'], strict_slashes=False)
-def resetTokenPage(self):
+@auth.route("/reset/password/<token>/", methods=['GET', 'POST'], strict_slashes=False)
+def resetPasswordPage(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.homePage'))
 
-    user = User.verify_reset_token(token)
-    if user is not None:
+    user = User.verify_reset_password_token(token)
+    if not user:
         flash("Ce jeton est invalide ou a expiré.", 'warning')
         return redirect(url_for('auth.resetRequestPage'))
 
     form = ResetPasswordForm()
     try:
-        hashed_password = bcrypt.generate_password_hash(
-            form.password.data).decode('utf-8')
-        user.password = hashed_password
-        db.session.commit()
-        flash("Votre mot de passe a été mise à jour avec succès !", "success")
-        return redirect(url_for('auth.loginPage'))
+        if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(
+                form.password.data).decode('utf-8')
+            user.password = hashed_password
+            db.session.commit()
+            flash("Votre mot de passe a été mise à jour avec succès !", "success")
+            return redirect(url_for('auth.loginPage'))
     except Exception as e:
         return f"Une erreur s'est produite: {e}"
 
