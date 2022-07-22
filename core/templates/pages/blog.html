@@ -35,9 +35,6 @@
                             </div>
 
                             <form method="GET" action="{{ url_for('main.searchPostPage') }}" class="row">
-
-                                {{ g.search_form.hidden_tag() }}
-
                                 <div class="mb-3 col ps-0 ms-2 ms-md-0">
                                     {{ g.search_form.query(class='form-control shadow-none', placeholder=g.search_form.query.label.text, type='search')}}
                                 </div>

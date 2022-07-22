@@ -8,10 +8,7 @@ def addToIndex(index, model):
     payload = {}
     for field in model.__searchable__:
         payload[field] = getattr(model, field)
-    current_app.elasticsearch.index(
-        index=index, id=model.id,
-        content=payload
-    )
+    current_app.elasticsearch.index(index=index, id=model.id, content=payload)
 
 
 def removeFromIndex(index, model):
@@ -23,13 +20,15 @@ def removeFromIndex(index, model):
 def queryIndex(index, query, page, per_page):
     if not current_app.elasticsearch:
         return [], 0
-    search = current_app.elasticsearch.search(
-        index=index, body={
-        'query': {'multi_match': {'query': query, 'fields': ['*']}},
-        'from': (page - 1) * per_page, 'size': per_page}
+    check = current_app.elasticsearch.search(
+        index=index,
+        body={
+            'query': {'multi_match': {'query': query, 'fields': ['*']}},
+            'from': (page - 1) * per_page, 'size': per_page
+        }
     )
-    ids = [int(hit['_id']) for hit in search['hits']['hits']]
-    return ids, search['hits']['total']['value']
+    ids = [int(hit['_id']) for hit in check['hits']['hits']]
+    return ids, check['hits']['total']['value']
 
 
 class SearchableMixin(object):
