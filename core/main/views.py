@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 from flask import(
     g, render_template, url_for, redirect,
-    current_app, request, make_response
+    current_app, request, make_response, Response
 )
 
 from flask_login import login_required, current_user
@@ -301,3 +301,13 @@ def sitemap():
     response.headers["Content-Type"] = "application/xml"
 
     return response
+
+
+@main.route('/robots.txt/', strict_slashes=False)
+def noindex():
+    r = Response(
+            response="User-Agent: *\nDisallow: admin/\nDisallow: account/\n",
+            status=200, mimetype="text/plain"
+        )
+    r.headers["Content-Type"] = "text/plain; charset=utf-8"
+    return r
