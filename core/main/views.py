@@ -3,10 +3,11 @@ Main page routes.
 """
 
 from datetime import datetime
+from urllib.parse import urlparse
 
 from flask import(
     g, render_template, url_for, redirect,
-    request, make_response
+    current_app, request, make_response
 )
 
 from flask_login import login_required, current_user
@@ -251,3 +252,48 @@ def dashboardPage():
         posts_count=posts_count,
         current_user=current_user
     )
+
+
+@main.route("/sitemap/", strict_slashes=False)
+@main.route("/sitemap.xml/", strict_slashes=False)
+def sitemap():
+    """
+        Route to dynamically generate a sitemap of your website/application.
+        lastmod and priority tags omitted on static pages.
+        lastmod included on dynamic content such as blog posts.
+    """
+
+    host_components = urlparse(request.host_url)
+    host_base = host_components.scheme + "://" + host_components.netloc
+
+    # Static routes with static content
+    static_urls = list()
+    for rule in current_app.url_map.iter_rules():
+        if(
+            not str(rule).startswith("/admin")
+            and not str(rule).startswith("/account")
+        ):
+            if "GET" in rule.methods and len(rule.arguments) == 0:
+                url = {
+                    "loc": f"{host_base}{str(rule)}"
+                }
+                static_urls.append(url)
+
+    # Dynamic routes with dynamic content
+    dynamic_urls = list()
+    blog_posts = Post.query.order_by(Post.date_posted.desc()).all()
+    for post in blog_posts:
+        url = {
+            "loc": f"{host_base}/article/{post.slug}",
+            "lastmod": post.date_posted.strftime("%Y-%m-%d")
+        }
+        dynamic_urls.append(url)
+
+    xml_sitemap = render_template(
+        "sitemap.xml", static_urls=static_urls,
+        dynamic_urls=dynamic_urls, host_base=host_base
+    )
+    response = make_response(xml_sitemap)
+    response.headers["Content-Type"] = "application/xml"
+
+    return response
