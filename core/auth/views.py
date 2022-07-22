@@ -11,6 +11,7 @@ from flask import(
     render_template, redirect, request,
     flash, url_for, current_app
 )
+from werkzeug.urls import url_parse
 
 from . import auth
 from ..models import Role, User
@@ -86,7 +87,7 @@ def loginPage():
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next')
-                if next_page is None or not next_page.startswith('/'):
+                if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('main.dashboardPage')
                 return redirect(next_page)
 

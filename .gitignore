@@ -130,6 +130,8 @@ cython_debug/
 *.db
 .git
 .idea/
+logs/
+logs/*.log
 media/
 core.db
 .vscode/
