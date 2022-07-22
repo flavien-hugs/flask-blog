@@ -15,9 +15,9 @@
                             </div>
                             <div class="ms-3">
                                 <div class="d-flex align-items-center">
-                                    <h3 class="mb-0 fw-bold me-2">{{ user.username.title() }}</h3>
+                                    <h3 class="mb-0 fw-bold me-2">{{ user.username | title() }}</h3>
                                     <span class="badge bg-light-primary text-primary">
-                                        {{ user.email.lower() }}
+                                        {{ user.email | lower() }}
                                     </span>
                                 </div>
                                 <span class="fs-6">{{ user.status }}</span>
