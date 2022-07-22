@@ -40,11 +40,7 @@ def createPostPage():
     page_title = "Créer un article"
 
     form = PostForm()
-    if (
-        current_user.can(Permission.WRITE)
-        and form.validate_on_submit()
-    ):
-
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
         if not form.title.data:
             flash("Veuillez définir le titre de l'article !")
         if not form.content.data:
@@ -54,7 +50,7 @@ def createPostPage():
                 title=form.title.data,
                 content=form.content.data,
                 post_cover=save_post_picture(form.picture.data),
-                author=current_user._get_current_object()
+                author=current_user
             )
 
             db.session.add(post)
