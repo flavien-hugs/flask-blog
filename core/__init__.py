@@ -60,29 +60,32 @@ def create_app(config_name):
     db.init_app(app)
 
     # blueprint routes in our app
+    
+    with app.app_context(): 
+        from .main import main as main_blueprint
+        app.register_blueprint(main_blueprint)
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+        from .auth import auth as auth_blueprint
+        app.register_blueprint(auth_blueprint, url_prefix='/account/')
 
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/account/')
+        from .blog import post as post_blueprint
+        app.register_blueprint(post_blueprint,  url_prefix='/account/dashboard/')
 
-    from .blog import post as post_blueprint
-    app.register_blueprint(post_blueprint,  url_prefix='/account/dashboard/')
+        from .admin import admin as admin_blueprint
+        app.register_blueprint(admin_blueprint, url_prefix='/admin/')
 
-    from .admin import admin as admin_blueprint
-    app.register_blueprint(admin_blueprint, url_prefix='/admin/')
+        if not app.debug and not app.testing:
+            if not os.path.exists('logs'):
+                os.mkdir('logs')
+            file_handler = RotatingFileHandler('logs/logging.log', maxBytes=10240, backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+            file_handler.setLevel(logging.INFO)
 
-    if not app.debug and not app.testing:
-        if not os.path.exists('logs'):
-            os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/logging.log', maxBytes=10240, backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
+            app.logger.setLevel(logging.INFO)
+            app.logger.info('running app')
 
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('running app')
+        db.create_all()
 
-    return app
+        return app
