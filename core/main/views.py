@@ -181,8 +181,10 @@ def searchPostPage():
     query = g.search_form.query.data
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(query, page, 8)
-    next_url = url_for('main.searchPostPage', query=query, page=page + 1) if total > page * 8 else None
-    prev_url = url_for('main.searchPostPage', query=query, page=page - 1) if total > 1 else None
+    next_url = url_for('main.searchPostPage', query=query, page=page + 1)\
+        if total > page * 8 else None
+    prev_url = url_for('main.searchPostPage', query=query, page=page - 1)\
+        if total > 1 else None
 
     return render_template(
         'pages/search.html',
