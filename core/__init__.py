@@ -11,6 +11,7 @@ from flask import Flask
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_bcrypt import Bcrypt
+from flask_session import Session
 from flask_migrate import Migrate
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
@@ -26,6 +27,7 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 moment = Moment()
 migrate = Migrate()
+session = Session()
 ckeditor = CKEditor()
 login_manager = LoginManager()
 alchemydumps = AlchemyDumps()
@@ -52,6 +54,7 @@ def create_app(config_name):
     mail.init_app(app)
     bcrypt.init_app(app)
     moment.init_app(app)
+    session.init_app(app)
     ckeditor.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
@@ -60,8 +63,8 @@ def create_app(config_name):
     db.init_app(app)
 
     # blueprint routes in our app
-    
-    with app.app_context(): 
+
+    with app.app_context():
         from .main import main as main_blueprint
         app.register_blueprint(main_blueprint)
 
