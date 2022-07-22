@@ -222,7 +222,7 @@ def updateAccountPage():
             return f"Une erreur s'est produite: {e}"
     elif request.method == 'GET':
         form.email.data = current_user.email
-        form.status.data = current_user.data
+        form.status.data = current_user.status
         form.website.data = current_user.website
         form.username.data = current_user.username
         form.biography.data = current_user.biography
