@@ -29,7 +29,7 @@ stamp: ## Set the revision in the database to the head, without performing any m
 	$(MANAGE) flask db stamp head
 
 revision: ## Revision database
-	$(MANAGE) flask db revision --rev-id 38c225b2fe44
+	$(MANAGE) flask db revision --rev-id 6d3a87e3b281
 
 migrate: ## Generate an initial migration
 	$(MANAGE) flask db migrate -m 'Intial Migration'
