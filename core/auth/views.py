@@ -5,7 +5,6 @@ Routes for user authentication.
 import os
 import uuid
 import secrets
-from threading import Thread
 
 from flask import(
     render_template, redirect, request,
@@ -14,13 +13,14 @@ from flask import(
 from werkzeug.urls import url_parse
 
 from . import auth
+from ..email import send_email
 from ..models import Role, User
 from .. import db, bcrypt, login_manager, mail
 from .forms import(
     RegistrationForm, LoginForm, UpdateAccountForm,
     ForgotPasswordForm, ResetPasswordForm
 )
-from flask_mail import Message
+
 from PIL import Image
 from flask_login import(
     login_user, logout_user, login_required,
@@ -105,20 +105,6 @@ def loginPage():
         page_title=page_title, form=form
     )
 
-
-def send_async_email(app, message):
-    with app.app_context():
-        mail.send(message)
-
-
-def send_email(subject, sender, recipients, text_body, html_body):
-    msg = Message(subject, sender=sender, recipients=recipients)
-    msg.body = text_body
-    msg.html = html_body
-    thr = Thread(target=send_async_email,
-            args=(current_app._get_current_object(), msg)
-        ).start()
-    return thr
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
