@@ -358,6 +358,22 @@ db.event.listen(User.username, 'set', User.generate_user_slug, retval=False)
 db.event.listen(Post.title, 'set', Post.generate_post_slug, retval=False)
 
 
+class Contact(db.Model):
+    """Contact model"""
+
+    __tablename__ = 'contact'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(80), nullable=False)
+    fullname = db.Column(db.String(100), nullable=False)
+    subject = db.Column(db.String(180), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+
+    def __repr__(self):
+        return f"Contact(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r})"
+
+
 @login_manager.user_loader
 def load_user(user_id):
     if user_id is not None:
