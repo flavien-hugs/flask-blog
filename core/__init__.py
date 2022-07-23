@@ -89,6 +89,4 @@ def create_app(config_name):
             app.logger.setLevel(logging.INFO)
             app.logger.info('running app')
 
-        db.create_all()
-
         return app
