@@ -1,0 +1,3 @@
+Vous avez un message de {{ to }}
+
+{{ message | safe }}

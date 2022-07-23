@@ -1,13 +1,129 @@
 {% extends '_base.html' %}
 
-
 {% block navbar %}
 {% endblock navbar %}
 
 {% block page_content %}    
-    <main class="py-8">
-        <div class="container">
-            
+    <main class="container-fluid">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-5 col-md-12 col-12">
+                <div class="px-xl-20 px-md-8 px-4 py-8 py-lg-0">
+                    <div class="d-flex justify-content-between mb-7 align-items-center">
+                        <a href="{{ url_for('main.homePage') }}"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo"></a>
+                    </div>
+                    <div class="text-dark">
+                        <h1 class="display-3 fw-bold mb-4">{{ page_title | capitalize() }}</h1>
+                        <p class="lead text-dark">
+                            Remplissez le formulaire à droite pour entrer en contact avec un membre de notre équipe, et nous vous contacterons rapidement. 
+                        </p>
+                        <div class="mt-8">
+                            <p class="fs-4 mb-4">
+                                Si vous cherchez un soutien, veuillez consulter notre <a href="#">support</a> avant de nous contacter directement.
+                            </p>
+
+                            <p class="fs-4">
+                                <i class="bi bi-telephone text-primary me-2"></i>
+                                {{ PHONE_NUMBER }}
+                            </p>
+
+                            <p class="fs-4">
+                                <i class="bi bi-envelope-open text-primary me-2"></i>
+                                {{ FLASKY_ADMIN | lower() }}
+                            </p>
+                        </div>
+                        
+                        <div class="mt-10">
+                            <a href="#" class="text-primary me-3">
+                                <i class="fe fe-facebook fs-3"></i>
+                            </a>
+                            <a href="#" class="text-primary me-3">
+                                <i class="fe fe-twitter fs-3"></i>
+                            </a>
+
+                            <a href="#" class="text-dark">
+                                <i class="fe fe-github fs-3"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 d-lg-flex align-items-center min-vh-lg-100 bg-light">
+
+                <div class="px-4 px-xl-20 py-8 py-lg-0">
+                    
+                    {% include "paths/_alert.html" %}
+
+                    <form method="POSt" class="row">
+
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3 col-12 col-md-12">
+                            {{ form.fullname.label(class="form-label") }}
+
+                            {% if form.fullname.errors %}
+                                {{ form.fullname(class="form-control shadow-none is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.fullname.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.fullname(class="form-control shadow-none", placeholder=form.fullname.label.text) }}
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 col-12 col-md-12">
+                            {{ form.email.label(class="form-label") }}
+
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control shadow-none is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control shadow-none", placeholder=form.email.label.text) }}
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 col-12 col-md-12">
+                            {{ form.subject.label(class="form-label") }}
+
+                            {% if form.subject.errors %}
+                                {{ form.subject(class="form-control shadow-none is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.subject.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.subject(class="form-control shadow-none", placeholder=form.subject.label.text) }}
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 col-12 col-md-12">
+                            {{ form.message.label(class="text-dark form-label") }}
+
+                            {% if form.message.errors %}
+                                {{ form.message(class="form-control shadow-none is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.message.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.message(class="form-control shadow-none", rows="8", placeholder=form.message.label.text) }}
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary btn-block text-uppercase shadow-none") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </main>
 {% endblock page_content %}
