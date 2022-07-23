@@ -6,17 +6,18 @@ from datetime import datetime
 from urllib.parse import urlparse
 
 from flask import(
-    g, render_template, url_for, redirect,
+    g, render_template, url_for, redirect, flash,
     current_app, request, make_response, Response
 )
 
 from flask_login import login_required, current_user
 
 from . import main
-from .forms import SearchForm
+from ..email import send_email
 from ..blog.forms import CommentForm
+from .forms import SearchForm, ContactForm
 from ..decorators import permission_required
-from ..models import db, Permission, User, Post, Comment
+from ..models import db, Permission, User, Post, Comment, Contact
 
 
 @main.route("/", strict_slashes=False)
@@ -196,7 +197,6 @@ def searchPostPage():
     )
 
 
-
 @main.route('/all')
 @login_required
 def showAllPage():
@@ -213,13 +213,48 @@ def showFollowedPage():
     return resp
 
 
-@main.route("/contact-me/", strict_slashes=False)
-@main.route("/contact/", strict_slashes=False)
+@main.route("/contact-us/", methods=['GET', 'POST'], strict_slashes=False)
+@main.route("/contact/", methods=['GET', 'POST'], strict_slashes=False)
 def contactPage():
-    page_title = "Laissez-moi un message"
+
+    form = ContactForm()
+    if form.validate_on_submit():
+        try:
+            message = Contact(
+                fullname=form.fullname.data,
+                email=form.email.data.lower(),
+                subject=form.subject.data,
+                message=form.message.data
+            )
+            db.session.add(message)
+            db.session.commit()
+            msg_success = f"""
+                Hey {form.fullname.data},
+                votre message a été envoyé avec success.
+                Nous vous contacterons dans un bref délais.
+            """
+            flash(msg_success, "success")
+            send_email(
+                subject=form.subject.data.capitalize(),
+                sender=current_app.config['MAIL_SENDER'],
+                recipients=['flavienhugs@pm.me'],
+                text_body=render_template(
+                    'paths/_message.txt', to=form.email.data.lower(),
+                    message=form.message.data),
+                html_body=render_template(
+                    'paths/_message.html', to=form.email.data.lower(),
+                    message=form.message.data)
+            )
+            return redirect(url_for('main.contactPage'))
+        except Exception as e:
+            return f"Une erreur s'est produite: {e}"
+
+    page_title = "Laissez-nous un message"
+
     return render_template(
         'pages/contact.html',
-        page_title=page_title
+        page_title=page_title,
+        form=form
     )
 
 
