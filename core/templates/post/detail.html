@@ -28,14 +28,12 @@
     						<img src="{{ post.author.gravatar(256) }}" alt="" class="rounded-circle avatar-md">
     						<div class="ms-2 lh-1">
     							<h5 class="mb-1">{{ post.author.username }}</h5>
-    							<span class="text-primary">Marketing Manager</span>
+    							<span class="text-primary">{{ post.author.status | capitalize() }}</span>
     						</div>
     					</div>
 
-    					<div>
-    						<div class="ms-2">
-    							{{ post.comments.count() }} commentaires
-    						</div>
+    					<div class="ms-2">
+    						{{ post.comments.count() }} commentaires
     					</div>
     				</div>
     			</div>
@@ -61,27 +59,34 @@
 
 	          		<h1 class="mb-4">({{ post.comments.count() }}) commentaires</h1>
 
-	          		<form method="POST" action=".">
-						{{ form.hidden_tag() }}
-						<div class="mb-3 col-12 col-md-12">
-							{{ form.content.label(class="form-label") }}
+	          		{% if current_user.is_authenticated %}
+						<form method="POST" action=".">
+							{{ form.hidden_tag() }}
+							<div class="mb-3 col-12 col-md-12">
+								{{ form.content.label(class="form-label") }}
 
-							{% if form.content.errors %}
-								{{ form.content(class="form-control shadow-none is-invalid") }}
-								<div class="invalid-feedback">
-									{% for error in form.content.errors %}
-									<span>{{ error }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								{{ form.content(class="form-control shadow-none", placeholder="Éditer votre article ...") }}
-							{% endif %}
-						</div>
+								{% if form.content.errors %}
+									{{ form.content(class="form-control shadow-none is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.content.errors %}
+										<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.content(class="form-control shadow-none", placeholder="Éditer votre article ...") }}
+								{% endif %}
+							</div>
 
-						<div class="d-grid">
-							{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
-						</div>
-					</form>
+							<div class="d-grid">
+								{{ form.submit(class="btn btn-primary fw-bold text-uppercase shadow-none") }}
+							</div>
+						</form>
+					{% else %}
+					    <a href="{{ url_for('auth.loginPage') }}"
+					    	class="fw-bolg fst-italic">
+					    		Connectez-vous pour ajouter votre commentaire.
+					    	</a>
+	          		{% endif %}
 
 					{{ ckeditor.load(pkg_type="basic") }}
 					{{ ckeditor.config(name='content') }}
