@@ -2,8 +2,9 @@
 Main page routes.
 """
 
-from datetime import datetime
+
 from urllib.parse import urlparse
+from datetime import datetime, date, timedelta
 
 from flask import(
     g, render_template, url_for, redirect, flash,
@@ -159,7 +160,7 @@ def followersPage(slug):
         user=user,
         follows=follows,
         pagination=pagination,
-         page_title="Les abonnés",
+        page_title="Les abonnés",
     )
 
 
@@ -179,7 +180,6 @@ def mainContextProcessor():
 
 @main.route('/search/', strict_slashes=False)
 def searchPostPage():
-
     query = g.search_form.query.data
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(query, page, 8)
@@ -279,13 +279,16 @@ def dashboardPage():
         username=current_user.username).first_or_404()
     posts = author.posts.order_by(Post.date_posted.desc()).limit(6)
     posts_count = author.posts.count()
+    comments_count = author.comments.count()
 
     return render_template(
         'auth/dashboard.html',
         posts=posts,
         page_title=page_title,
         posts_count=posts_count,
-        current_user=current_user
+        comments_count=comments_count,
+        current_user=current_user,
+        datetime=date.today() + timedelta(days=3)
     )
 
 
