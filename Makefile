@@ -14,7 +14,7 @@ install: venv ## Install or update dependencies
 	pipenv install
 
 freeze: ## Pin current dependencies
-	pipenv run pip freeze --local > requirements.txt
+	pipenv run pip freeze > requirements.txt
 
 test: ## Run the unit tests
 	$(MANAGE) flask test
