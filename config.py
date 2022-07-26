@@ -61,7 +61,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "postgres://ootexhxsddkiku:6d49f917b61475d7fff8ee962a2ef8853bf6c22b8381ca6f91364d432b2d08e2@ec2-34-239-241-121.compute-1.amazonaws.com:5432/dddinf4tjc4tb6"
+    SQLALCHEMY_DATABASE_URI = "postgresql://ootexhxsddkiku:6d49f917b61475d7fff8ee962a2ef8853bf6c22b8381ca6f91364d432b2d08e2@ec2-34-239-241-121.compute-1.amazonaws.com:5432/dddinf4tjc4tb6"
 
 
 config = {
