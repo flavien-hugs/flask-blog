@@ -6,8 +6,6 @@ Set Flask configuration from environment variables
 import datetime
 from os import urandom, environ, path
 
-import redis
-
 BASE_DIR = path.abspath(path.dirname(__file__))
 
 
@@ -33,12 +31,10 @@ class Config:
     MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
     RESET_TOKEN_MINUTES = environ.get('RESET_TOKEN_MINUTES')
     ELASTICSEARCH_URL = environ.get('ELASTICSEARCH_URL')
-
-    SESSION_TYPE = environ.get('SESSION_TYPE')
+    
     SESSION_PERMANENT = environ.get('SESSION_PERMANENT')
     SESSION_USE_SIGNER = environ.get('SESSION_USE_SIGNER')
     PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=1)
-    SESSION_REDIS = redis.from_url('redis://localhost:6379')
 
     @staticmethod
     def init_app(app):

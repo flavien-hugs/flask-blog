@@ -23,7 +23,6 @@ flask-moment = "*"
 faker = "*"
 elasticsearch = {extras = ["async"], version = "*"}
 flask-session = "*"
-redis = "*"
 psycopg2 = "*"
 
 [dev-packages]
