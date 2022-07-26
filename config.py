@@ -31,10 +31,6 @@ class Config:
     MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
     RESET_TOKEN_MINUTES = environ.get('RESET_TOKEN_MINUTES')
     ELASTICSEARCH_URL = environ.get('ELASTICSEARCH_URL')
-    
-    SESSION_PERMANENT = environ.get('SESSION_PERMANENT')
-    SESSION_USE_SIGNER = environ.get('SESSION_USE_SIGNER')
-    PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=1)
 
     @staticmethod
     def init_app(app):

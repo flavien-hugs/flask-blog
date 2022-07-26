@@ -11,7 +11,6 @@ from flask import Flask
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_bcrypt import Bcrypt
-from flask_session import Session
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -24,7 +23,6 @@ mail = Mail()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 moment = Moment()
-session = Session()
 ckeditor = CKEditor()
 login_manager = LoginManager()
 
@@ -50,7 +48,6 @@ def create_app(config_name):
     bcrypt.init_app(app)
     moment.init_app(app)
     db.init_app(app)
-    session.init_app(app)
     ckeditor.init_app(app)
     login_manager.init_app(app)
 
