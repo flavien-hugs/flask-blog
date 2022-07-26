@@ -16,6 +16,10 @@ BASE_DIR = path.abspath(path.dirname(__file__))
 
 class Config:
 
+    DEBUG = False
+    TESTING = False
+    DEVELOPMENT = False
+
     SECRET_KEY = environ.get('SECRET_KEY', urandom(24))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
@@ -46,6 +50,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    DEVELOPMENT = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'data-dev.sqlite')
 
 

@@ -1,2 +1,2 @@
-web: gunicorn --access-logfile - --error-logfile core:app
+web: gunicorn core:app
 init: make createdb
