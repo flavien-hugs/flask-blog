@@ -32,7 +32,7 @@ def homePage():
     else:
         query = Post.query
 
-    posts = query.order_by(Post.date_posted.desc()).limit(6)
+    posts = query.order_by(Post.date_posted.desc())[:6]
     return render_template(
         'pages/index.html',
         posts=posts,
