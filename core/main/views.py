@@ -32,14 +32,10 @@ def homePage():
     else:
         query = Post.query
 
-    authors_count = User.query.count()
-    posts_count = Post.query.count()
     posts = query.order_by(Post.date_posted.desc()).limit(6)
     return render_template(
         'pages/index.html',
         posts=posts,
-        posts_count=posts_count,
-        authors_count=authors_count,
         show_followed=show_followed
     )
 
