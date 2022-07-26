@@ -29,7 +29,6 @@ migrate = Migrate()
 session = Session()
 ckeditor = CKEditor()
 login_manager = LoginManager()
-alchemydumps = AlchemyDumps()
 
 login_manager.login_view = 'auth.loginPage'
 login_manager.session_protection = "strong"
