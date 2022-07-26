@@ -21,7 +21,6 @@ flask-migrate = "*"
 pyjwt = "*"
 flask-moment = "*"
 faker = "*"
-flask-alchemydumps = "==0.0.13"
 elasticsearch = {extras = ["async"], version = "*"}
 flask-session = "*"
 redis = "*"
