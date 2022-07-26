@@ -22,9 +22,6 @@ from ..models import db, Permission, User, Post, Comment, Contact
 
 
 @main.route("/", strict_slashes=False)
-@main.route("/home/", strict_slashes=False)
-@main.route("/index/", strict_slashes=False)
-@main.route("/accueil/", strict_slashes=False)
 def homePage():
     show_followed = False
 
