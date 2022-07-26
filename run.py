@@ -9,7 +9,7 @@ from core import create_app, db
 from core.models import Role, User, Post, Comment
 
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
 
 @app.shell_context_processor
 def make_shell_context():
@@ -33,4 +33,5 @@ def init_db():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    print(app.config['DEBUG'])
+    app.run(debug=app.config['DEBUG'])

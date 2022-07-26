@@ -37,8 +37,7 @@ login_manager.login_message_category = 'info'
 
 def create_app(config_name):
     app = Flask(__name__)
-    config_name = os.getenv("APP_SETTINGS", "config.DevelopmentConfig")
-    app.config.from_object(config_name)
+    app.config.from_object(config[config_name])
 
     if app.config['ELASTICSEARCH_URL']:
         app.elasticsearch = Elasticsearch(

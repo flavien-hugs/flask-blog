@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = path.abspath(path.dirname(__file__))
 
-# load_dotenv(path.join(BASE_DIR, ".flaskeenv"))
+load_dotenv(path.join(BASE_DIR, ".flaskeenv"))
 
 
 class Config:
@@ -51,7 +51,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     DEVELOPMENT = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'dev.sqlite')
 
 
 class TestingConfig(Config):
@@ -61,12 +61,11 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'prod.sqlite')
 
 
 config = {
-    'testing': TestingConfig,
-    'default': DevelopmentConfig,
-    'production': ProductionConfig,
-    'development': DevelopmentConfig,
+    'test': TestingConfig,
+    'prod': ProductionConfig,
+    'dev': DevelopmentConfig,
 }
