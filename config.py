@@ -57,8 +57,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL') \
-        or 'sqlite:///' + path.join(BASE_DIR, 'data.sqlite')
+    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL')
 
 
 config = {
