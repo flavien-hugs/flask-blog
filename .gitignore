@@ -134,6 +134,7 @@ logs/
 logs/*.log
 media/
 core.db
+Pipfile.lock
 .vscode/
 .flaskenv
 Pipfile.lock
