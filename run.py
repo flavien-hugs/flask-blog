@@ -6,10 +6,19 @@ import os
 import logging as lg
 
 from core import create_app, db
+from flask_migrate import Migrate
 from core.models import Role, User, Post, Comment
+
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.flaskeenv')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
+migrate = Migrate(app, db)
+
 
 @app.shell_context_processor
 def make_shell_context():
@@ -33,5 +42,4 @@ def init_db():
 
 
 if __name__ == "__main__":
-    print(app.config['DEBUG'])
-    app.run(debug=app.config['DEBUG'])
+    app.run()

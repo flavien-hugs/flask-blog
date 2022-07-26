@@ -7,11 +7,8 @@ import datetime
 from os import urandom, environ, path
 
 import redis
-from dotenv import load_dotenv
 
 BASE_DIR = path.abspath(path.dirname(__file__))
-
-load_dotenv(path.join(BASE_DIR, ".flaskeenv"))
 
 
 class Config:
@@ -51,17 +48,24 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     DEVELOPMENT = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = environ.get('DEV_DATABASE_URL') or \
+        'sqlite:///' + path.join(BASE_DIR, 'dev.sqlite')
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = environ.get('TEST_DATABASE_URL') \
         or 'sqlite://'
+    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASE_DIR, 'prod.sqlite')
+    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL') or \
+        'sqlite:///' + path.join(BASE_DIR, 'prod.sqlite')
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
 
 
 config = {

@@ -1,2 +1,2 @@
-web: gunicorn core:app
+web: gunicorn --access-logfile - --error-logfile - run:app
 release: make createdb

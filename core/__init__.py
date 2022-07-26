@@ -12,7 +12,6 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from flask_migrate import Migrate
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -25,7 +24,6 @@ mail = Mail()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 moment = Moment()
-migrate = Migrate()
 session = Session()
 ckeditor = CKEditor()
 login_manager = LoginManager()
@@ -38,6 +36,7 @@ login_manager.login_message_category = 'info'
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
     if app.config['ELASTICSEARCH_URL']:
         app.elasticsearch = Elasticsearch(
@@ -50,14 +49,10 @@ def create_app(config_name):
     mail.init_app(app)
     bcrypt.init_app(app)
     moment.init_app(app)
+    db.init_app(app)
     session.init_app(app)
     ckeditor.init_app(app)
     login_manager.init_app(app)
-    migrate.init_app(app, db)
-
-    db.init_app(app)
-
-    # blueprint routes in our app
 
     with app.app_context():
         from .main import main as main_blueprint
