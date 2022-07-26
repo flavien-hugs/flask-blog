@@ -23,10 +23,7 @@ from ..models import db, Permission, User, Post, Comment, Contact
 
 @main.route("/", strict_slashes=False)
 def homePage():
-    return render_template(
-        'pages/index.html',
-        show_followed=show_followed
-    )
+    return render_template('pages/index.html')
 
 
 @main.route("/blog/", strict_slashes=False)
