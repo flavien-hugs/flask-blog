@@ -43,9 +43,11 @@ def registerPage():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
-            user = User(gender=form.gender.data,
-                        email=form.email.data.lower(),
-                        username=form.username.data)
+            user = User(
+                gender=form.gender.data,
+                email=form.email.data.lower(),
+                username=form.username.data
+            )
             user.password = bcrypt.generate_password_hash(
                 form.password.data).decode('utf-8')
             db.session.add(user)
