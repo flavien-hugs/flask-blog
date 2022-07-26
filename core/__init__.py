@@ -17,7 +17,6 @@ from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from elasticsearch import Elasticsearch
-from flask_alchemydumps import AlchemyDumps
 
 from config import config
 
@@ -58,7 +57,6 @@ def create_app(config_name):
     ckeditor.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
-    alchemydumps.init_app(app, db)
 
     db.init_app(app)
 
