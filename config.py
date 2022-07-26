@@ -57,7 +57,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL').replace("://", "ql://", 1)
+    SQLALCHEMY_DATABASE_URI = environ.get['DATABASE_URL']
 
 
 config = {
