@@ -23,16 +23,7 @@ from ..models import db, Permission, User, Post, Comment, Contact
 
 @main.route("/", strict_slashes=False)
 def homePage():
-    show_followed = False
-
-    if current_user.is_authenticated:
-        show_followed = bool(request.cookies.get('show_followed', ''))
-    if show_followed:
-        query = current_user.followed_posts
-    else:
-        query = Post.query
-
-    posts = query.order_by(Post.date_posted.desc())[:6]
+    posts = Post.query.order_by(Post.date_posted.desc())[:6]
     return render_template(
         'pages/index.html',
         posts=posts,
