@@ -23,7 +23,7 @@ from ..models import db, Permission, User, Post, Comment, Contact
 
 @main.route("/", strict_slashes=False)
 def homePage():
-    posts = Post.query.order_by(Post.date_posted.desc())[:6]
+    posts = Post.query.order_by(Post.date_posted)[:6]
     return render_template(
         'pages/index.html',
         posts=posts,
