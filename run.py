@@ -11,13 +11,13 @@ from core.models import Role, User, Post, Comment
 
 from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.flaskeenv')
+dotenv_path = os.path.join(os.path.dirname(__file__), '.flaskenv')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 
 @app.shell_context_processor
@@ -37,6 +37,7 @@ def test():
 @app.cli.command('init_db')
 def init_db():
     db.create_all()
+    Role.insert_roles()
     db.session.commit()
     lg.warning('Database initialized !')
 

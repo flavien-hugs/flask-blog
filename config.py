@@ -22,7 +22,7 @@ class Config:
     PHONE_NUMBER = "(225) 01 5157 1396"
     FLASKY_ADMIN = "unsta@pm.me"
     WTF_CSRF_SECRET_KEY = environ.get('SECRET_KEY')
-    MAIL_POST = environ.get('MAIL_SERVER')
+    MAIL_POST = int(environ.get('MAIL_POST', '587'))
     MAIL_SERVER = environ.get('MAIL_SERVER')
     MAIL_USE_TLS = environ.get('MAIL_USE_TLS', 'true').lower() in ['true', 'on', '1']
     MAIL_USERNAME = environ.get('MAIL_USERNAME')
@@ -58,6 +58,28 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
+
+        import logging
+        from logging.handlers import SMTPHandler
+
+        credentials = None
+        secure = None
+
+        if getattr(cls, 'MAIL_USERNAME', None) is not None:
+            credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
+            if getattr(cls, 'MAIL_USE_TLS', None):
+                secure = ()
+
+        mail_handler = SMTPHandler(
+            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            fromaddr=cls.MAIL_SENDER,
+            toaddrs=[cls.FLASKY_ADMIN],
+            subject=cls.MAIL_SUBJECT_PREFIX + ' Application Error',
+            credentials=credentials,
+            secure=secure
+        )
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
 
 
 config = {
