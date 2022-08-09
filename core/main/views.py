@@ -266,8 +266,7 @@ def dashboardPage():
         page_title=page_title,
         posts_count=posts_count,
         comments_count=comments_count,
-        current_user=current_user,
-        datetime=date.today() + timedelta(days=3)
+        current_user=current_user
     )
 
 
