@@ -6,12 +6,13 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, render_template
 
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
+from flask_wtf.csrf import CSRFError
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from elasticsearch import Elasticsearch
@@ -63,5 +64,55 @@ def create_app(config_name):
 
         from .admin import admin as admin_blueprint
         app.register_blueprint(admin_blueprint, url_prefix='/admin/')
+
+
+        @app.errorhandler(404)
+        def pageNotFound(error):
+            page_title = f"{error.code} - page non trouvé"
+            return render_template(
+                'pages/error.html',
+                page_title=page_title,
+                error=error
+            ), 404
+
+        @app.errorhandler(500)
+        def internalServerError(error):
+            page_title = f"{error.code} - quelques choses à mal tourné"
+            return render_template(
+                'pages/error.html',
+                page_title=page_title,
+                error=error
+            ), 500
+
+        @app.errorhandler(400)
+        def keyError(error):
+            page_title = f"{error.code} - une demande invalide a entraîné une KeyError."
+            return render_template(
+                'pages/error.html',
+                page_title=page_title,
+                error=error
+            ), 400
+
+        @app.errorhandler(CSRFError)
+        def handleCsrfError(error):
+            page_title = f"{error.code} - une demande invalide a entraîné une KeyError."
+            return render_template(
+                'pages/error.html',
+                page_title=page_title,
+                error=error
+            ), 400
+
+        if not app.debug and not app.testing:
+            if not os.path.exists('logs'):
+                os.mkdir('logs')
+            file_handler = RotatingFileHandler(
+                'logs/logging.log', maxBytes=10240, backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+            file_handler.setLevel(logging.INFO)
+
+            app.logger.addHandler(file_handler)
+            app.logger.setLevel(logging.INFO)
+            app.logger.info('running app')
 
         return app
