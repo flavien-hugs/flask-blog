@@ -211,11 +211,11 @@ class User(db.Model, UserMixin):
         return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
 
     def gravatar(self, size=256, default='identicon', rating='g'):
+        hasher = self.image_file or self.gravatar_hash()
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
-            hasher = self.image_file or self.gravatar_hash()
         return f"{url}/{hasher}?s={size}&d={default}&r={rating}"
 
     @staticmethod
