@@ -1,2 +1,2 @@
-web: gunicorn --access-logfile - --error-logfile - run:app
+web: gunicorn --worker-tmp-dir /dev/shm --config gunicorn_config.py run:app
 release: make createdb
