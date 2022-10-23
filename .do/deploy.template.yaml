@@ -1,0 +1,7 @@
+spec:
+  name: flask-blog
+  services:
+  - name: web
+    git:
+      branch: main
+      repo_clone_url: https://github.com/flavien-hugs/flask-blog.git

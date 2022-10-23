@@ -1,0 +1,6 @@
+name: flask-blog
+services:
+  - name: web
+    github:
+      repo: flavien-hugs/flask-blog
+      branch: main
