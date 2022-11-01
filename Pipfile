@@ -22,7 +22,6 @@ pyjwt = "*"
 flask-moment = "*"
 faker = "*"
 elasticsearch = {extras = ["async"], version = "*"}
-psycopg2 = "*"
 
 [dev-packages]
 
