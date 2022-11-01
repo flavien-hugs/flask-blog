@@ -28,6 +28,7 @@
                             <a target="_blank" href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}">
                                 <div class="d-lg-flex align-items-center">
                                     <img
+                                        loading="lazy"
                                         width="100" height="60"
                                         src="{{ url_for('static', filename=post_cover) }}"
                                         alt="{{ post.slug }}" class="rounded img-4by3-lg">

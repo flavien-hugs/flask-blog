@@ -9,7 +9,9 @@
             <div class="col-lg-5 col-md-12 col-12">
                 <div class="px-xl-20 px-md-8 px-4 py-8 py-lg-0">
                     <div class="d-flex justify-content-between mb-7 align-items-center">
-                        <a href="{{ url_for('main.homePage') }}"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo"></a>
+                        <a href="{{ url_for('main.homePage') }}">
+                            <img loading="lazy" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
+                        </a>
                     </div>
                     <div class="text-dark">
                         <h1 class="display-3 fw-bold mb-4">{{ page_title | capitalize() }}</h1>

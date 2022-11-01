@@ -11,7 +11,7 @@
                     <div class="col-lg-8 col-md-8 col-12">
                         <div class="d-flex align-items-center">
                             <div class="position-relative mt-n9">
-                                <img src="{{ user.gravatar(256) }}" alt="{{ user.slug }}" class="rounded-circle avatar-xxl border-white border border-4 position-relative">
+                                <img loading="lazy" src="{{ user.gravatar(256) }}" alt="{{ user.slug }}" class="rounded-circle avatar-xxl border-white border border-4 position-relative">
                             </div>
                             <div class="ms-3">
                                 <div class="d-flex align-items-center">
@@ -93,7 +93,7 @@
                                                 <a href="#">
                                                     <div class="d-lg-flex align-items-center">
                                                         <div>
-                                                            <img src="{{ url_for('static', filename=post_cover) }}"
+                                                            <img loading="lazy" src="{{ url_for('static', filename=post_cover) }}"
                                                             alt="{{ post.slug }}" class="rounded img-4by3-lg">
                                                         </div>
                                                         <div class="ms-lg-3 mt-2 mt-lg-0">

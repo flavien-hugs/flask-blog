@@ -7,7 +7,7 @@
 			<a href="{{ url_for('main.postDetailPage', post_slug=post.slug) }}" class="card-img-top">
 				<img src="{{ url_for('static', filename=post_cover) }}"
 					class="card-img-top" width="356" height="192"
-					alt="{{ post.title.lower() }}">
+					alt="{{ post.title.lower() }}" loading="lazy">
 			</a>
 
 			<div class="card-body">
@@ -22,7 +22,7 @@
 				<div class="row align-items-center g-0 mt-4">
 					<div class="col-auto">
 						<img src="{{ post.author.gravatar(size=256) }}" alt="{{ post.author.username }}"
-							class="rounded-circle avatar-sm me-2">
+							class="rounded-circle avatar-sm me-2" loading="lazy">
 					</div>
 					<div class="col lh-1">
 						<h5 class="mb-1">
